@@ -5,9 +5,9 @@ function Navigator({ to, children }) {
     isActive
       ? {
           color: "white",
-          padding: "0.9rem",
+          padding: "0.6rem",
           borderRadius: "10px",
-          background: "pink",
+          background: "#7C3AED",
         }
       : { color: "white" };
 
