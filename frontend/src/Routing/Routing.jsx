@@ -1,6 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DashboardPage from "../UI/pages/DashboardPage";
 import ProjectsPage from "../UI/pages/ProjectsPage";
+import LoginPage from "../UI/pages/Auth/LoginPage";
+import RegisterPage from "../UI/pages/Auth/LoginPage";
+
 import CreateProjectPage from "../UI/pages/CreateProjectPage";
 import InvistorsPage from "../UI/pages/InvistorsPage";
 import ProfilePage from "../UI/pages/Auth/ProfilePage";
@@ -10,11 +13,11 @@ function Routing() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<LoginPage />} />
-          <Route path="/Login" element={<LoginPage />} />
-          <Route path="/Register" element={<RegisterPage />} /> */}
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/Login" element={<LoginPage />} />
+        <Route path="/Register" element={<RegisterPage />} />
 
-        <Route path="/" element={<MainLayout />}>
+        <Route path="/home" element={<MainLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="projects" element={<ProjectsPage />} />
           <Route path="createProject" element={<CreateProjectPage />} />

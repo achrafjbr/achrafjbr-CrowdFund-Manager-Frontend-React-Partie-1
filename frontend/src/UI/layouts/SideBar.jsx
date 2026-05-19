@@ -16,7 +16,7 @@ function SideBar() {
       <Link to={"/Login"} /> */}
 
       {/*  */}
-      <Navigator to="/">
+      <Navigator to="/home">
         <LayoutDashboard />
         <span>Dashboard</span>
       </Navigator>
