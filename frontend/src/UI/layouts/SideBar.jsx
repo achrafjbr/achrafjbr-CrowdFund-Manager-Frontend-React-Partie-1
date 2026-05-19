@@ -6,7 +6,6 @@ import {
   Users,
 } from "lucide-react";
 import Navigator from "../components/Navigator";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 
 function SideBar() {
   return (
@@ -21,11 +20,8 @@ function SideBar() {
           </h2>
         </div>
 
-        {/* <Link to={"/Login"} />
-        <Link to={"/Login"} /> */}
-
         {/*  */}
-        <Navigator to="/">
+        <Navigator to="/home">
           <LayoutDashboard />
           <span>Dashboard</span>
         </Navigator>
