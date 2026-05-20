@@ -1,7 +1,14 @@
-const TOKEN_KEY = "token";
+import axios from "axios";
 
-const setToken = (token) => localStorage.setItem(TOKEN_KEY, token);
-const getToken = () => localStorage.getItem(TOKEN_KEY);
-const deleteToken = () => localStorage.removeItem(TOKEN_KEY);
+const loginUserApi = async (userCredentials) => {
+  const response = await axios.post(
+    "http://localhost:8080/auth/login",
+    userCredentials,
+  );
 
-export { setToken, getToken, deleteToken };
+  return response;
+};
+
+const registerUserApi = async () => {};
+
+export { loginUserApi, registerUserApi };

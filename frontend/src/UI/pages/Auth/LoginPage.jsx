@@ -1,6 +1,10 @@
 import { useState } from "react";
-
+import { useDispatch, useSelector, useNavu } from "react-redux";
+import { loginUser } from "../../../store/slices/authenticationSlice";
+import { useNavigate } from "react-router-dom";
 const SignInLayer = ({ onChange, onSubmit }) => {
+  c;
+
   return (
     <div className="text-center space-y-5">
       <h2 className="text-center text-4xl font-bold text-black">Sign In</h2>
@@ -109,21 +113,31 @@ function LoginPage() {
         },
   );
 
+  const dispatch = useDispatch();
+
+  const { loading, error } = useSelector((state) => state.authentication);
+
+  const navigate = useNavigate();
+
   const inputsHandler = (event) => {
-    // console.log("event", event);
     const value = event.target.value;
     const key = event.target.name;
     const authType = event.authType;
-    console.log("authType", authType);
-    console.log("key", key);
-    console.log("value", value);
     setUserAuth({ ...userAuth, [key]: value, authType });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     //const auth = { ...userAuth };
     console.log(userAuth);
+    const { authType } = userAuth;
+    if (authType == authTypes.SIGN_IN) {
+      const result = await dispatch(loginUser(userAuth));
+
+      if (loginUser.fulfilled.match(result)) {
+        navigate("/home", { replace: true });
+      }
+    }
   };
 
   // true state means : (Right & Signup )
