@@ -29,8 +29,8 @@ async function login(email, password) {
   }
 
   const isMatch = await bcrypt.compare(password, foundUser.password);
-//   console.log("isMatch:", isMatch);
-  
+  //   console.log("isMatch:", isMatch);
+
   if (!isMatch) {
     throw new Error("Invalid credentials");
   }
@@ -41,7 +41,7 @@ async function login(email, password) {
     { expiresIn: "2d" },
   );
 
-  return { token };
+  return { token, user: foundUser };
 }
 
 async function getUserById(id) {
