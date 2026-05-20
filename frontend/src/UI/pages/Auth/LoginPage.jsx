@@ -7,27 +7,26 @@ const SignInLayer = ({ onChange, onSubmit }) => {
       <p className="font-light tracking-[.25em] text-black">
         Sing in with Email and Password
       </p>
-      <form className="space-y-5 p-2 " onSubmit={(event) => onSubmit(event)}>
+      <form className="space-y-5 p-2 " onSubmit={onSubmit}>
         <input
           className="outline-0 w-full py-2 border-0 font-serif bg-gray-100 rounded border-black"
           type="text"
           name="email"
           placeholder="Entre E-mail"
-          onChange={(e) => onChange(e)}
+          onChange={onChange}
         />
         <input
           className="outline-0 w-full py-2 border-0 font-serif bg-gray-100 rounded border-black"
           type="text"
           name="password"
           placeholder="Entre Password"
-          onChange={(e) => onChange(e)}
+          onChange={onChange}
         />
         <button
           className="px-10 py-3 ring-2 
           shadow-2xl
             rounded font-sans
           text-black"
-          type="submit"
         >
           SIGN IN
         </button>
@@ -47,21 +46,21 @@ const SignUpLayer = ({ onChange, onSubmit }) => {
       </p>
       <form
         className="space-y-5 p-2 flex flex-col items-center "
-        onSubmit={(e) => onSubmit(e)}
+        onSubmit={onSubmit}
       >
         <input
           className="outline-0 w-full py-2 border-0 font-serif bg-gray-100 rounded border-black"
           type="text"
           name="name"
           placeholder="Entre Name"
-          onChange={(e) => onChange(e)}
+          onChange={onChange}
         />
         <input
           className="outline-0 w-full py-2 border-0 font-serif bg-gray-100 rounded border-black"
           type="text"
           name="email"
           placeholder="Entre E-mail"
-          onChange={(e) => onChange(e)}
+          onChange={onChange}
         />
 
         <input
@@ -69,7 +68,7 @@ const SignUpLayer = ({ onChange, onSubmit }) => {
           type="text"
           name="password"
           placeholder="Entre Password"
-          onChange={(e) => onChange(e)}
+          onChange={onChange}
         />
 
         <button
@@ -88,21 +87,42 @@ const SignUpLayer = ({ onChange, onSubmit }) => {
   );
 };
 
+const authTypes = {
+  SIGN_IN: "signin",
+  SIGN_UP: "signup",
+};
 function LoginPage() {
   const [switchAuth, setSwitchAuth] = useState(true);
 
-  const [userAuth, setUserAuth] = useState(null);
+  const [userAuth, setUserAuth] = useState(
+    authTypes.SIGN_IN
+      ? {
+          authType: authTypes.SIGN_IN,
+          email: "",
+          password: "",
+        }
+      : {
+          authType: authTypes.SIGN_UP,
+          name: "",
+          email: "",
+          password: "",
+        },
+  );
 
   const inputsHandler = (event) => {
+    // console.log("event", event);
     const value = event.target.value;
     const key = event.target.name;
+    const authType = event.authType;
+    console.log("authType", authType);
     console.log("key", key);
     console.log("value", value);
-    setUserAuth({ ...useState, [key]: value });
+    setUserAuth({ ...userAuth, [key]: value, authType });
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
+    //const auth = { ...userAuth };
     console.log(userAuth);
   };
 
@@ -160,9 +180,19 @@ function LoginPage() {
                     ${switchAuth ? "translate-x-0" : "translate-x-full"}   `}
       >
         {switchAuth ? (
-          <SignInLayer onChange={inputsHandler} onSubmit={submitHandler} />
+          <SignInLayer
+            onChange={(e) =>
+              inputsHandler({ ...e, authType: authTypes.SIGN_IN })
+            }
+            onSubmit={submitHandler}
+          />
         ) : (
-          <SignUpLayer onChange={inputsHandler} onSubmit={submitHandler} />
+          <SignUpLayer
+            onChange={(e) =>
+              inputsHandler({ ...e, authType: authTypes.SIGN_UP })
+            }
+            onSubmit={submitHandler}
+          />
         )}
       </div>
     </div>
