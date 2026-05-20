@@ -57,6 +57,7 @@ const SignInLayer = ({ onChange, onSubmit }) => {
 const SignUpLayer = ({ onChange, onSubmit }) => {
   const { isLoading, isError } = useSelector((state) => state.authentication);
   useError(isError);
+
   return (
     <div className="text-center space-y-5">
       <h2 className="text-center text-4xl font-bold text-black">
