@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { useDispatch, useSelector, useNavu } from "react-redux";
-import { loginUser } from "../../../store/slices/authenticationSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loginUser,
+  registerUser,
+} from "../../../store/slices/authenticationSlice";
 import { useNavigate } from "react-router-dom";
+import { useError } from "../../../hooks/useError";
 const SignInLayer = ({ onChange, onSubmit }) => {
-  c;
-
+  const { isLoading, isError } = useSelector((state) => state.authentication);
+  useError(isError);
   return (
     <div className="text-center space-y-5">
       <h2 className="text-center text-4xl font-bold text-black">Sign In</h2>
@@ -26,20 +30,33 @@ const SignInLayer = ({ onChange, onSubmit }) => {
           placeholder="Entre Password"
           onChange={onChange}
         />
-        <button
-          className="px-10 py-3 ring-2 
+
+        <p
+          className={`transition-all duration-1000 text-red-300 ${isError ? "opacity-100" : "opacity-0"}`}
+        >
+          {isError}
+        </p>
+
+        {isLoading ? (
+          <div>Loading....</div>
+        ) : (
+          <button
+            className="px-10 py-3 ring-2 
           shadow-2xl
             rounded font-sans
           text-black"
-        >
-          SIGN IN
-        </button>
+          >
+            SIGN IN
+          </button>
+        )}
       </form>
     </div>
   );
 };
 
 const SignUpLayer = ({ onChange, onSubmit }) => {
+  const { isLoading, isError } = useSelector((state) => state.authentication);
+  useError(isError);
   return (
     <div className="text-center space-y-5">
       <h2 className="text-center text-4xl font-bold text-black">
@@ -75,17 +92,24 @@ const SignUpLayer = ({ onChange, onSubmit }) => {
           onChange={onChange}
         />
 
-        <button
-          className="px-10 py-3 ring-2 
-          w-1/3
-          shadow-2xl
-          rounded 
-          font-sans
-          text-black"
-          type="submit"
+        <p
+          className={`transition-all duration-1000 text-red-300 ${isError ? "opacity-100" : "opacity-0"}`}
         >
-          SIGN UP
-        </button>
+          {isError}
+        </p>
+
+        {isLoading ? (
+          <div>Loading....</div>
+        ) : (
+          <button
+            className="px-10 py-3 ring-2 
+          shadow-2xl
+            rounded font-sans
+          text-black"
+          >
+            SIGN UP
+          </button>
+        )}
       </form>
     </div>
   );
@@ -115,7 +139,7 @@ function LoginPage() {
 
   const dispatch = useDispatch();
 
-  const { loading, error } = useSelector((state) => state.authentication);
+  const { isLoading, isError } = useSelector((state) => state.authentication);
 
   const navigate = useNavigate();
 
@@ -128,14 +152,22 @@ function LoginPage() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    //const auth = { ...userAuth };
-    console.log(userAuth);
+
     const { authType } = userAuth;
     if (authType == authTypes.SIGN_IN) {
-      const result = await dispatch(loginUser(userAuth));
+      const { email, password } = userAuth;
 
+      const result = await dispatch(loginUser({ email, password }));
       if (loginUser.fulfilled.match(result)) {
+        console.log(authTypes.SIGN_IN);
         navigate("/home", { replace: true });
+      }
+    } else if (authTypes.SIGN_UP) {
+      console.log(authTypes.SIGN_UP);
+      const { name, email, password } = userAuth;
+      const result = dispatch(registerUser({ name, email, password }));
+      if (registerUser.fulfilled.match(result)) {
+        switchAuth(true);
       }
     }
   };
@@ -143,74 +175,78 @@ function LoginPage() {
   // true state means : (Right & Signup )
   // False state means : (Left & Signin )
 
-  return (
-    <div>
-      {/* Top layer */}
-      <div
-        className={`flex flex-col gap-y-10 justify-center items-center
+  if (isLoading) {
+    return <div>Loading....</div>;
+  } else {
+    return (
+      <div>
+        {/* Top layer */}
+        <div
+          className={`flex flex-col gap-y-10 justify-center items-center
                     min-h-screen bg-linear-to-r
                    from-cyan-500 to-blue-300 w-1/2
                   shadow-2xl absolute z-10 transition-all duration-500 
                   ${switchAuth ? "translate-x-full" : "translate-x-0"} `}
-      >
-        <div className={""}>
-          {switchAuth ? (
-            <div className="text-center space-y-2">
-              <h2 className="text-4xl font-mono text-white">Sign Up</h2>
-              <p className="font-light tracking-[.25em] text-white">
-                Sing up now an enjoy our site
-              </p>
-            </div>
-          ) : (
-            <div>
+        >
+          <div className={""}>
+            {switchAuth ? (
               <div className="text-center space-y-2">
-                <h2 className="text-center text-4xl font-mono text-white">
-                  Welcome to CrowdFunder
-                </h2>
+                <h2 className="text-4xl font-mono text-white">Sign Up</h2>
                 <p className="font-light tracking-[.25em] text-white">
-                  Sing in with Email and Password
+                  Sing up now an enjoy our site
                 </p>
               </div>
-            </div>
-          )}
-        </div>
+            ) : (
+              <div>
+                <div className="text-center space-y-2">
+                  <h2 className="text-center text-4xl font-mono text-white">
+                    Welcome to CrowdFunder
+                  </h2>
+                  <p className="font-light tracking-[.25em] text-white">
+                    Sing in with Email and Password
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
 
-        <button
-          onClick={() => setSwitchAuth(!switchAuth)}
-          className="px-10 py-3 ring-2
+          <button
+            onClick={() => setSwitchAuth(!switchAuth)}
+            className="px-10 py-3 ring-2
            ring-white shadow-2xl
             rounded font-semibold
           text-white "
-        >
-          {switchAuth ? "SignUp" : "SignIn"}
-        </button>
-      </div>
+          >
+            {switchAuth ? "SignUp" : "SignIn"}
+          </button>
+        </div>
 
-      {/* Bottom layer */}
-      <div
-        className={` min-h-screen
+        {/* Bottom layer */}
+        <div
+          className={` min-h-screen
                     flex justify-center  items-center
                      w-1/2 transition-all duration-500
                     ${switchAuth ? "translate-x-0" : "translate-x-full"}   `}
-      >
-        {switchAuth ? (
-          <SignInLayer
-            onChange={(e) =>
-              inputsHandler({ ...e, authType: authTypes.SIGN_IN })
-            }
-            onSubmit={submitHandler}
-          />
-        ) : (
-          <SignUpLayer
-            onChange={(e) =>
-              inputsHandler({ ...e, authType: authTypes.SIGN_UP })
-            }
-            onSubmit={submitHandler}
-          />
-        )}
+        >
+          {switchAuth ? (
+            <SignInLayer
+              onChange={(e) =>
+                inputsHandler({ ...e, authType: authTypes.SIGN_IN })
+              }
+              onSubmit={submitHandler}
+            />
+          ) : (
+            <SignUpLayer
+              onChange={(e) =>
+                inputsHandler({ ...e, authType: authTypes.SIGN_UP })
+              }
+              onSubmit={submitHandler}
+            />
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default LoginPage;

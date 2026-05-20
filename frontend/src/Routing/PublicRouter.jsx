@@ -1,12 +1,14 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
-export default function ProtectedRoute({ children }) {
+function PublicRouter({ children }) {
   const { token } = useSelector((state) => state.authentication);
-  console.log("Token", token);
 
-  if (!token) {
-    return <Navigate to={"/login"} />;
+  if (token) {
+    return <Navigate to={"/home"} />;
   }
+
   return children;
 }
+
+export default PublicRouter;
