@@ -15,6 +15,12 @@ router.get(
   roleMiddleware("owner"),
   projectController.getMyProjects
 );
+router.get(
+  "/:id",
+  authMiddleware,
+  roleMiddleware("owner", "investor"),
+  projectController.getProjectById
+);
 
 router.put(
   "/:id",

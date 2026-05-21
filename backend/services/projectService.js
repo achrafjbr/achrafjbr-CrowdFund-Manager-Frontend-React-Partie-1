@@ -80,6 +80,9 @@ async function getProjectInvetors(projectId) {
     .populate("investor", "name email");
 }
 
+async function getProjectById(projectId) {
+  return await Project.findById(projectId).populate("owner", "name email");
+}
 module.exports = {
   createProject,
   getMyProjects,
@@ -87,4 +90,5 @@ module.exports = {
   deleteProject,
   closePorject,
   getProjectInvetors,
+  getProjectById
 };
