@@ -56,7 +56,7 @@ const SignInLayer = ({ onChange, onSubmit }) => {
   );
 };
 
-const SignUpLayer = ({ onChange, onSubmit }) => {
+const SignUpLayer = ({ onChange, onSubmit, handleRoleChange, role }) => {
   const { isLoading, isError } = useSelector((state) => state.authentication);
   // useError(isError);
 
@@ -101,6 +101,52 @@ const SignUpLayer = ({ onChange, onSubmit }) => {
           {isError}
         </p> */}
 
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Select Role</h2>
+
+          <div className="flex gap-6">
+            {/* Owner */}
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="Owner"
+                checked={role === "Owner"}
+                onChange={handleRoleChange}
+              />
+              <span>Owner</span>
+            </label>
+
+            {/* Investor */}
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="Investor"
+                checked={role === "Investor"}
+                onChange={handleRoleChange}
+              />
+              <span>Investor</span>
+            </label>
+
+            {/* Admin */}
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="Admin"
+                checked={role === "Admin"}
+                onChange={handleRoleChange}
+              />
+              <span>Admin</span>
+            </label>
+          </div>
+
+          <p className="text-gray-700">
+            Selected Role: <strong>{role}</strong>
+          </p>
+        </div>
+
         {isLoading ? (
           <Loading isLoading={isLoading} />
         ) : (
@@ -124,7 +170,6 @@ const authTypes = {
 };
 function LoginPage() {
   const [switchAuth, setSwitchAuth] = useState(true);
-
   const [userAuth, setUserAuth] = useState(
     authTypes.SIGN_IN
       ? {
@@ -139,7 +184,11 @@ function LoginPage() {
           password: "",
         },
   );
+  const [role, setRole] = useState("Owner");
 
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
   const dispatch = useDispatch();
 
   const { isLoading, isError } = useSelector((state) => state.authentication);
@@ -159,7 +208,6 @@ function LoginPage() {
     const { authType } = userAuth;
     if (authType == authTypes.SIGN_IN) {
       const { email, password } = userAuth;
-
       const result = await dispatch(loginUser({ email, password }));
       if (loginUser.fulfilled.match(result)) {
         console.log(authTypes.SIGN_IN);
@@ -168,9 +216,10 @@ function LoginPage() {
     } else if (authTypes.SIGN_UP) {
       console.log(authTypes.SIGN_UP);
       const { name, email, password } = userAuth;
-      const result = dispatch(registerUser({ name, email, password }));
-      if (registerUser.fulfilled.match(result)) {
-        switchAuth(true);
+
+      const result = dispatch(registerUser({ name, email, password, role }));
+      if (isLoading == false) {
+        setSwitchAuth(true);
       }
     }
   };
@@ -227,7 +276,7 @@ function LoginPage() {
         className={` min-h-screen
                     flex justify-center  items-center
                      w-1/2 transition-all duration-500
-                    ${switchAuth ? "translate-x-0" : "translate-x-full"}   `}
+                    ${switchAuth || isLoading ? "translate-x-0" : "translate-x-full"}   `}
       >
         {switchAuth ? (
           <SignInLayer
@@ -238,6 +287,8 @@ function LoginPage() {
           />
         ) : (
           <SignUpLayer
+            handleRoleChange={handleRoleChange}
+            role={role}
             onChange={(e) =>
               inputsHandler({ ...e, authType: authTypes.SIGN_UP })
             }
@@ -245,6 +296,7 @@ function LoginPage() {
           />
         )}
       </div>
+
       <ErrorModel error={isError} />
       {/* <Loading isLoading={isLoading} /> */}
     </div>
