@@ -6,11 +6,17 @@ import {
   Users,
 } from "lucide-react";
 import Navigator from "../components/Navigator";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/slices/authenticationSlice";
+import { useNavigate } from "react-router-dom";
 
 function SideBar() {
+  const authState = useSelector((state) => state.authentication);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     // <div className="bg-[#0B1020] w-[18%] p-1.5 py-6 space-y-70 min-h-screen">
-      <div className="bg-[#0B1020] w-[18%] p-1.5 py-6 space-y-60 min-h-screen fixed top-0 left-0 overflow-y-auto">
+    <div className="bg-[#0B1020] w-[18%] p-1.5 py-6 space-y-70 min-h-screen fixed top-0 left-0 overflow-y-auto">
       <div className="space-y-6">
         <div className="flex items-center gap-3 text-white mb-6">
           <i className="fa-solid fa-chart-line text-purple-600 text-3xl"></i>
@@ -48,7 +54,13 @@ function SideBar() {
         </Navigator>
 
         {/*  */}
-        <div className=" text-white cursor-pointer flex gap-2">
+        <div
+          className="text-white cursor-pointer flex gap-2"
+          onClick={() => {
+            dispatch(logout());
+            navigate("/login", { replace: true });
+          }}
+        >
           <LogOut />
           <span>Logout</span>
         </div>
