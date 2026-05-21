@@ -10,7 +10,6 @@ async function createProject(data, ownerId) {
     initialInvestment,
     percentage,
   } = data;
-  // console.log(data);
 
   const project = await Project.create({
     title,
@@ -22,14 +21,16 @@ async function createProject(data, ownerId) {
     owner: ownerId,
     status: "open",
   });
+
   if (initialInvestment && initialInvestment > 0) {
     await investment.create({
       investor: ownerId,
       project: project._id,
       amount: initialInvestment,
-      precentage: (initialInvestment / capital) * 100,
+      percentage: (initialInvestment / capital) * 100,
     });
   }
+
   return project;
 }
 
