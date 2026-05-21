@@ -43,7 +43,7 @@ export const registerUser = createAsyncThunk(
 const initialState = {
   isLoading: false,
   isError: null,
-  token: getToken(TOKEN_KEY) || null,
+  token: getToken() || null,
   user: null,
 };
 
@@ -54,7 +54,7 @@ const AuthenticationSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
-      deleteToken(TOKEN_KEY);
+      deleteToken();
     },
     hideError: (state, action) => {
       state.isError = null;

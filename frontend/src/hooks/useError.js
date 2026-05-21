@@ -8,7 +8,7 @@ export const useError = (error) => {
     if (error) {
       const outTimer = setTimeout(() => {
         dispatch(hideError());
-      }, 500);
+      }, 1000);
       () => clearTimeout(outTimer);
     }
   }, [error, dispatch]);

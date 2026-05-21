@@ -6,9 +6,11 @@ import {
 } from "../../../store/slices/authenticationSlice";
 import { useNavigate } from "react-router-dom";
 import { useError } from "../../../hooks/useError";
+import ErrorModel from "../../components/ErrorModel";
+import Loading from "../../components/Loading";
 const SignInLayer = ({ onChange, onSubmit }) => {
   const { isLoading, isError } = useSelector((state) => state.authentication);
-  useError(isError);
+  // useError(isError);
   return (
     <div className="text-center space-y-5">
       <h2 className="text-center text-4xl font-bold text-black">Sign In</h2>
@@ -31,14 +33,14 @@ const SignInLayer = ({ onChange, onSubmit }) => {
           onChange={onChange}
         />
 
-        <p
+        {/* <p
           className={`transition-all duration-1000 text-red-300 ${isError ? "opacity-100" : "opacity-0"}`}
         >
           {isError}
-        </p>
+        </p> */}
 
         {isLoading ? (
-          <div>Loading....</div>
+          <Loading isLoading={isLoading} />
         ) : (
           <button
             className="px-10 py-3 ring-2 
@@ -54,9 +56,9 @@ const SignInLayer = ({ onChange, onSubmit }) => {
   );
 };
 
-const SignUpLayer = ({ onChange, onSubmit }) => {
+const SignUpLayer = ({ onChange, onSubmit, handleRoleChange, role }) => {
   const { isLoading, isError } = useSelector((state) => state.authentication);
-  useError(isError);
+  // useError(isError);
 
   return (
     <div className="text-center space-y-5">
@@ -93,14 +95,60 @@ const SignUpLayer = ({ onChange, onSubmit }) => {
           onChange={onChange}
         />
 
-        <p
+        {/* <p
           className={`transition-all duration-1000 text-red-300 ${isError ? "opacity-100" : "opacity-0"}`}
         >
           {isError}
-        </p>
+        </p> */}
+
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Select Role</h2>
+
+          <div className="flex gap-6">
+            {/* Owner */}
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="Owner"
+                checked={role === "Owner"}
+                onChange={handleRoleChange}
+              />
+              <span>Owner</span>
+            </label>
+
+            {/* Investor */}
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="Investor"
+                checked={role === "Investor"}
+                onChange={handleRoleChange}
+              />
+              <span>Investor</span>
+            </label>
+
+            {/* Admin */}
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="Admin"
+                checked={role === "Admin"}
+                onChange={handleRoleChange}
+              />
+              <span>Admin</span>
+            </label>
+          </div>
+
+          <p className="text-gray-700">
+            Selected Role: <strong>{role}</strong>
+          </p>
+        </div>
 
         {isLoading ? (
-          <div>Loading....</div>
+          <Loading isLoading={isLoading} />
         ) : (
           <button
             className="px-10 py-3 ring-2 
@@ -122,7 +170,6 @@ const authTypes = {
 };
 function LoginPage() {
   const [switchAuth, setSwitchAuth] = useState(true);
-
   const [userAuth, setUserAuth] = useState(
     authTypes.SIGN_IN
       ? {
@@ -137,7 +184,11 @@ function LoginPage() {
           password: "",
         },
   );
+  const [role, setRole] = useState("Owner");
 
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
   const dispatch = useDispatch();
 
   const { isLoading, isError } = useSelector((state) => state.authentication);
@@ -157,7 +208,6 @@ function LoginPage() {
     const { authType } = userAuth;
     if (authType == authTypes.SIGN_IN) {
       const { email, password } = userAuth;
-
       const result = await dispatch(loginUser({ email, password }));
       if (loginUser.fulfilled.match(result)) {
         console.log(authTypes.SIGN_IN);
@@ -166,88 +216,91 @@ function LoginPage() {
     } else if (authTypes.SIGN_UP) {
       console.log(authTypes.SIGN_UP);
       const { name, email, password } = userAuth;
-      const result = dispatch(registerUser({ name, email, password }));
-      if (registerUser.fulfilled.match(result)) {
-        switchAuth(true);
+
+      const result = dispatch(registerUser({ name, email, password, role }));
+      if (isLoading == false) {
+        setSwitchAuth(true);
       }
     }
   };
 
+  useError(isError);
+
   // true state means : (Right & Signup )
   // False state means : (Left & Signin )
 
-  if (isLoading) {
-    return <div>Loading....</div>;
-  } else {
-    return (
-      <div>
-        {/* Top layer */}
-        <div
-          className={`flex flex-col gap-y-10 justify-center items-center
+  return (
+    <div className="relative">
+      {/* ^Bottom layer */}
+      <div
+        className={`flex flex-col gap-y-10 justify-center items-center
                     min-h-screen bg-linear-to-r
                    from-cyan-500 to-blue-300 w-1/2
                   shadow-2xl absolute z-10 transition-all duration-500 
                   ${switchAuth ? "translate-x-full" : "translate-x-0"} `}
-        >
-          <div className={""}>
-            {switchAuth ? (
+      >
+        <div className={""}>
+          {switchAuth ? (
+            <div className="text-center space-y-2">
+              <h2 className="text-4xl font-mono text-white">Sign Up</h2>
+              <p className="font-light tracking-[.25em] text-white">
+                Sing up now an enjoy our site
+              </p>
+            </div>
+          ) : (
+            <div>
               <div className="text-center space-y-2">
-                <h2 className="text-4xl font-mono text-white">Sign Up</h2>
+                <h2 className="text-center text-4xl font-mono text-white">
+                  Welcome to CrowdFunder
+                </h2>
                 <p className="font-light tracking-[.25em] text-white">
-                  Sing up now an enjoy our site
+                  Sing in with Email and Password
                 </p>
               </div>
-            ) : (
-              <div>
-                <div className="text-center space-y-2">
-                  <h2 className="text-center text-4xl font-mono text-white">
-                    Welcome to CrowdFunder
-                  </h2>
-                  <p className="font-light tracking-[.25em] text-white">
-                    Sing in with Email and Password
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <button
-            onClick={() => setSwitchAuth(!switchAuth)}
-            className="px-10 py-3 ring-2
+            </div>
+          )}
+        </div>
+        <button
+          onClick={() => setSwitchAuth(!switchAuth)}
+          className="px-10 py-3 ring-2
            ring-white shadow-2xl
             rounded font-semibold
           text-white "
-          >
-            {switchAuth ? "SignUp" : "SignIn"}
-          </button>
-        </div>
+        >
+          {switchAuth ? "SignUp" : "SignIn"}
+        </button>
+      </div>
 
-        {/* Bottom layer */}
-        <div
-          className={` min-h-screen
+      {/* Top layer */}
+      <div
+        className={` min-h-screen
                     flex justify-center  items-center
                      w-1/2 transition-all duration-500
-                    ${switchAuth ? "translate-x-0" : "translate-x-full"}   `}
-        >
-          {switchAuth ? (
-            <SignInLayer
-              onChange={(e) =>
-                inputsHandler({ ...e, authType: authTypes.SIGN_IN })
-              }
-              onSubmit={submitHandler}
-            />
-          ) : (
-            <SignUpLayer
-              onChange={(e) =>
-                inputsHandler({ ...e, authType: authTypes.SIGN_UP })
-              }
-              onSubmit={submitHandler}
-            />
-          )}
-        </div>
+                    ${switchAuth || isLoading ? "translate-x-0" : "translate-x-full"}   `}
+      >
+        {switchAuth ? (
+          <SignInLayer
+            onChange={(e) =>
+              inputsHandler({ ...e, authType: authTypes.SIGN_IN })
+            }
+            onSubmit={submitHandler}
+          />
+        ) : (
+          <SignUpLayer
+            handleRoleChange={handleRoleChange}
+            role={role}
+            onChange={(e) =>
+              inputsHandler({ ...e, authType: authTypes.SIGN_UP })
+            }
+            onSubmit={submitHandler}
+          />
+        )}
       </div>
-    );
-  }
+
+      <ErrorModel error={isError} />
+      {/* <Loading isLoading={isLoading} /> */}
+    </div>
+  );
 }
 
 export default LoginPage;
