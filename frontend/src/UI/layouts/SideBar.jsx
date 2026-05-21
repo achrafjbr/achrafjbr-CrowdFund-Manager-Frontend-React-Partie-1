@@ -10,7 +10,7 @@ import Navigator from "../components/Navigator";
 function SideBar() {
   return (
     // <div className="bg-[#0B1020] w-[18%] p-1.5 py-6 space-y-70 min-h-screen">
-      <div className="bg-[#0B1020] w-[18%] p-1.5 py-6 space-y-70 min-h-screen fixed top-0 left-0 overflow-y-auto">
+      <div className="bg-[#0B1020] w-[18%] p-1.5 py-6 space-y-60 min-h-screen fixed top-0 left-0 overflow-y-auto">
       <div className="space-y-6">
         <div className="flex items-center gap-3 text-white mb-6">
           <i className="fa-solid fa-chart-line text-purple-600 text-3xl"></i>
