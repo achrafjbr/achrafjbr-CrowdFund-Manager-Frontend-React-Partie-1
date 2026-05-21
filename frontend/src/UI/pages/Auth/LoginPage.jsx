@@ -6,9 +6,10 @@ import {
 } from "../../../store/slices/authenticationSlice";
 import { useNavigate } from "react-router-dom";
 import { useError } from "../../../hooks/useError";
+import ErrorModel from "../../components/ErrorModel";
 const SignInLayer = ({ onChange, onSubmit }) => {
   const { isLoading, isError } = useSelector((state) => state.authentication);
-  useError(isError);
+  // useError(isError);
   return (
     <div className="text-center space-y-5">
       <h2 className="text-center text-4xl font-bold text-black">Sign In</h2>
@@ -31,11 +32,11 @@ const SignInLayer = ({ onChange, onSubmit }) => {
           onChange={onChange}
         />
 
-        <p
+        {/* <p
           className={`transition-all duration-1000 text-red-300 ${isError ? "opacity-100" : "opacity-0"}`}
         >
           {isError}
-        </p>
+        </p> */}
 
         {isLoading ? (
           <div>Loading....</div>
@@ -56,7 +57,7 @@ const SignInLayer = ({ onChange, onSubmit }) => {
 
 const SignUpLayer = ({ onChange, onSubmit }) => {
   const { isLoading, isError } = useSelector((state) => state.authentication);
-  useError(isError);
+  // useError(isError);
 
   return (
     <div className="text-center space-y-5">
@@ -93,11 +94,11 @@ const SignUpLayer = ({ onChange, onSubmit }) => {
           onChange={onChange}
         />
 
-        <p
+        {/* <p
           className={`transition-all duration-1000 text-red-300 ${isError ? "opacity-100" : "opacity-0"}`}
         >
           {isError}
-        </p>
+        </p> */}
 
         {isLoading ? (
           <div>Loading....</div>
@@ -173,6 +174,8 @@ function LoginPage() {
     }
   };
 
+  useError(isError);
+
   // true state means : (Right & Signup )
   // False state means : (Left & Signin )
 
@@ -180,8 +183,8 @@ function LoginPage() {
     return <div>Loading....</div>;
   } else {
     return (
-      <div>
-        {/* Top layer */}
+      <div className="relative">
+        {/* ^Bottom layer */}
         <div
           className={`flex flex-col gap-y-10 justify-center items-center
                     min-h-screen bg-linear-to-r
@@ -210,7 +213,6 @@ function LoginPage() {
               </div>
             )}
           </div>
-
           <button
             onClick={() => setSwitchAuth(!switchAuth)}
             className="px-10 py-3 ring-2
@@ -222,7 +224,7 @@ function LoginPage() {
           </button>
         </div>
 
-        {/* Bottom layer */}
+        {/* Top layer */}
         <div
           className={` min-h-screen
                     flex justify-center  items-center
@@ -245,6 +247,7 @@ function LoginPage() {
             />
           )}
         </div>
+        <ErrorModel error={isError} />
       </div>
     );
   }
