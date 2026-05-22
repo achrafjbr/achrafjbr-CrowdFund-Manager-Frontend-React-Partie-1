@@ -21,6 +21,14 @@ async function getMyProjects(req,res) {
         res.status(400).json({message : error.message})
     }
 }
+async function getProjectById(req,res) {
+    try {
+        const project = await projectService.getProjectById(req.params.id)
+        res.status(200).json(project)
+    } catch (error) {
+        res.status(400).json({message : error.message})
+    }
+}
 async function updateProject(req,res) {
     try {
         const project = await projectService.updateProject(
@@ -74,5 +82,6 @@ module.exports={
     updateProject,
     deleteProject,
     closePorject,
-    getProjectInvetors
+    getProjectInvetors,
+    getProjectById
 }
