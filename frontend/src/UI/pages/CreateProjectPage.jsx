@@ -1,5 +1,9 @@
 function CreateProjectPage() {
-  return <div>CreateProjectPage</div>;
+  return (
+    <>
+    
+    </>
+  )
 }
 
 export default CreateProjectPage;
