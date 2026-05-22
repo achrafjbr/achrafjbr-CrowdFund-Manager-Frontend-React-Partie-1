@@ -23,14 +23,14 @@ router.get(
 );
 
 router.put(
-  "/:id",
+  "/my-projects/:id",
   authMiddleware,
   roleMiddleware("owner"),
   projectController.updateProject
 );
 
 router.patch(
-  "/:id/close",
+  "/my-projects/:id/close",
   authMiddleware,
   roleMiddleware("owner"),
   projectController.closePorject
