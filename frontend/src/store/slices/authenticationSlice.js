@@ -5,10 +5,10 @@ import {
   registerUserApi,
 } from "../../services/authenticationService";
 import {
+  decodeToken,
   deleteToken,
   getToken,
   setToken,
-  TOKEN_KEY,
 } from "../../services/tokenService";
 
 // LOGIN API CALL (async thunk)
@@ -45,6 +45,7 @@ const initialState = {
   isError: null,
   token: getToken() || null,
   user: null,
+  decodedToken: decodeToken(),
 };
 
 const AuthenticationSlice = createSlice({

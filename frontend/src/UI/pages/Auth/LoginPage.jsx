@@ -8,6 +8,12 @@ import { useNavigate } from "react-router-dom";
 import { useError } from "../../../hooks/useError";
 import ErrorModel from "../../components/ErrorModel";
 import Loading from "../../components/Loading";
+
+const authTypes = {
+  SIGN_IN: "signin",
+  SIGN_UP: "signup",
+};
+
 const SignInLayer = ({ onChange, onSubmit }) => {
   const { isLoading, isError } = useSelector((state) => state.authentication);
   // useError(isError);
@@ -164,10 +170,6 @@ const SignUpLayer = ({ onChange, onSubmit, handleRoleChange, role }) => {
   );
 };
 
-const authTypes = {
-  SIGN_IN: "signin",
-  SIGN_UP: "signup",
-};
 function LoginPage() {
   const [switchAuth, setSwitchAuth] = useState(true);
   const [userAuth, setUserAuth] = useState(
@@ -182,6 +184,7 @@ function LoginPage() {
           name: "",
           email: "",
           password: "",
+          role: role,
         },
   );
   const [role, setRole] = useState("Owner");
@@ -210,15 +213,13 @@ function LoginPage() {
       const { email, password } = userAuth;
       const result = await dispatch(loginUser({ email, password }));
       if (loginUser.fulfilled.match(result)) {
-        console.log(authTypes.SIGN_IN);
         navigate("/home", { replace: true });
       }
     } else if (authTypes.SIGN_UP) {
-      console.log(authTypes.SIGN_UP);
       const { name, email, password } = userAuth;
-
-      const result = dispatch(registerUser({ name, email, password, role }));
-      if (isLoading == false) {
+      console.log("ROOOOOOLE", role);
+      const result = dispatch(registerUser({ name, email, password }));
+      if (!isLoading && !isError) {
         setSwitchAuth(true);
       }
     }

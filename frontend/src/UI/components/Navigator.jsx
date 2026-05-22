@@ -13,7 +13,7 @@ function Navigator({ to, children }) {
 
   return (
     <div>
-      <NavLink style={isActiveLinke} to={to} className={`flex gap-2 `}>
+      <NavLink end style={isActiveLinke} to={to} className={`flex gap-2 `}>
         {children}
       </NavLink>
     </div>

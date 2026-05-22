@@ -9,6 +9,7 @@ import Navigator from "../components/Navigator";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/slices/authenticationSlice";
 import { useNavigate } from "react-router-dom";
+import RouteBasedRole from "../../Routing/RouteBasedRole";
 
 function SideBar() {
   const authState = useSelector((state) => state.authentication);
@@ -39,19 +40,24 @@ function SideBar() {
         </Navigator>
 
         {/*  */}
-        <Navigator to="investors">
-          <Users />
-          <span>Investors</span>
-        </Navigator>
+        <RouteBasedRole roles={["investor", "owner", "admin"]}>
+          <Navigator to="investors">
+            <Users />
+            <span>Investors</span>
+          </Navigator>
+        </RouteBasedRole>
       </div>
 
       {/* <h2 className="mt-20 font-extralight">ACCOUNT</h2> */}
       <div className="space-y-6">
         {/*  */}
-        <Navigator to="profile">
-          <UserRound />
-          <span>Profile</span>
-        </Navigator>
+
+        <RouteBasedRole roles={["admin", "investor", "owner"]}>
+          <Navigator to="profile">
+            <UserRound />
+            <span>Profile</span>
+          </Navigator>
+        </RouteBasedRole>
 
         {/*  */}
         <div
