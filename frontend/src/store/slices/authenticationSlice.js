@@ -47,6 +47,7 @@ const initialState = {
   token: getToken() || null,
   user: null,
   decodedToken: decodeToken(),
+  isSuccess: false,
 };
 
 const AuthenticationSlice = createSlice({
@@ -56,6 +57,7 @@ const AuthenticationSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
+      state.decodedToken = null;
       deleteToken();
     },
     hideError: (state, action) => {
@@ -85,6 +87,7 @@ const AuthenticationSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.isLoading = false;
+        state.isSuccess = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
