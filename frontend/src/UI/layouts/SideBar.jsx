@@ -39,7 +39,7 @@ function SideBar() {
         </Navigator>
 
         {/*  */}
-        <RouteBasedRole roles={"owner"}>
+        <RouteBasedRole roles={["owner"]}>
           <Navigator to="projects">
             <FolderGit2 />
             <span>Projects</span>

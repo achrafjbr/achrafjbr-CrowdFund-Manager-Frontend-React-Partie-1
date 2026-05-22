@@ -219,7 +219,7 @@ function LoginPage() {
     } else if (authTypes.SIGN_UP) {
       const { name, email, password } = userAuth;
       const result = dispatch(registerUser({ name, email, password, role }));
-      if (!isLoading && !isError) {
+      if (!isLoading && !isError && registerUser.fulfilled.match(result)) {
         // setSwitchAuth(true);
         setTimeout(() => {
           setSwitchAuth(true);
