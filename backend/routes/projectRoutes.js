@@ -16,7 +16,7 @@ router.get(
   projectController.getMyProjects
 );
 router.get(
-  "/:id",
+  "/my-projects/:id",
   authMiddleware,
   roleMiddleware("owner", "investor"),
   projectController.getProjectById
