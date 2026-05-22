@@ -3,9 +3,10 @@ import { getInvestorsApi } from "../../services/investorsService";
 
 export const getInvestors = createAsyncThunk(
   "investors/getInvestor",
-  (thunkApi) => {
+  async (thunkApi) => {
     try {
-      const response = getInvestorsApi();
+      const response = await getInvestorsApi();
+      console.log("Data", response.data);
       return response;
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);

@@ -48,7 +48,7 @@ function SideBar() {
         {/* GET http://localhost:8080/api/projects/my-projects 403 (Forbidden) */}
 
         {/*  */}
-        <RouteBasedRole roles={["investor", "owner", "admin"]}>
+        <RouteBasedRole roles={["investor", "admin"]}>
           <Navigator to="investors">
             <Users />
             <span>Investors</span>

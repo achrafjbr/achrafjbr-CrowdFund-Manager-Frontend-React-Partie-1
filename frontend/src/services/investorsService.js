@@ -13,6 +13,7 @@ export const getInvestorsApi = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log("Investors data", response.data);
     return response.data;
   } catch (error) {
     throw {
