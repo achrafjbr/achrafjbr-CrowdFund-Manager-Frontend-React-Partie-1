@@ -30,9 +30,6 @@ export const getProjectById = async (id) => {
 
   return response.data;
 };
-<<<<<<< HEAD
-=======
-
 // Update project
 export const updateProject = async (id, projectData) => {
   const token = localStorage.getItem("token");
@@ -45,4 +42,3 @@ export const updateProject = async (id, projectData) => {
   const response = await axios.put(`${API_URL}/${id}`, projectData, config);
   return response.data;
 };
->>>>>>> Update_project
