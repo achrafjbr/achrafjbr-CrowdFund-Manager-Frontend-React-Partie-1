@@ -24,23 +24,31 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-
 function DashboardPage() {
   const dispatch = useDispatch();
 
-  const { data, loading, error } = useSelector((state) => state.projects);
-  console.log(data);
-  
+  const { projects, loading, error } = useSelector((state) => state.projects);
+  console.log("projects", projects);
+
+  const data = projects;
+
   useEffect(() => {
     dispatch(fetchProjects());
   }, [dispatch]);
   if (loading)
     return <CircularProgress color="secondary" aria-label="Loading…" />;
   if (error) return <p>{error}</p>;
-  const totalProject = data.length
-  const projectIsOpen =data.filter((project) => project.status === "open").length
-  const projectIsClose =data.filter((project) => project.status === "closed").length
-  const totalCapitalRaised = data.reduce((sum , project)=> sum + project.raisedAmount , 0)
+  const totalProject = data.length;
+  const projectIsOpen = data.filter(
+    (project) => project.status === "open",
+  ).length;
+  const projectIsClose = data.filter(
+    (project) => project.status === "closed",
+  ).length;
+  const totalCapitalRaised = data.reduce(
+    (sum, project) => sum + project.raisedAmount,
+    0,
+  );
   return (
     <>
       <Typography
@@ -179,10 +187,10 @@ function DashboardPage() {
                 Projects Overview
               </Typography>
             </Grid>
-            
+
             <Grid item xs={12} sx={{ color: "#bd76ff" }}>
-              <Link to = "/home/projects">
-              <span>View all projects →</span>
+              <Link to="/home/projects">
+                <span>View all projects →</span>
               </Link>
             </Grid>
           </Grid>

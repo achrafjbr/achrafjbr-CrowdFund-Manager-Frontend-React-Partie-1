@@ -9,3 +9,18 @@
     color: var(--text);
     font-family: Inter, Segoe UI, Arial, sans-serif;
 } */
+
+main{
+  background: radial-gradient(
+    circle at 30% 0,
+    #171328 0,
+    #050609 35%,
+    #020205 100%
+  );
+  margin: 0;
+    color: var(--text);
+    font-family: Inter, Segoe UI, Arial, sans-serif;
+    margin-left: 273px;
+    width: 1264px;
+    min-height: 100vh;
+}

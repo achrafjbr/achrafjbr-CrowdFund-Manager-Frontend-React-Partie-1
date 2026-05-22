@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loginUser,
@@ -8,6 +8,12 @@ import { useNavigate } from "react-router-dom";
 import { useError } from "../../../hooks/useError";
 import ErrorModel from "../../components/ErrorModel";
 import Loading from "../../components/Loading";
+
+const authTypes = {
+  SIGN_IN: "signin",
+  SIGN_UP: "signup",
+};
+
 const SignInLayer = ({ onChange, onSubmit }) => {
   const { isLoading, isError } = useSelector((state) => state.authentication);
   // useError(isError);
@@ -110,8 +116,8 @@ const SignUpLayer = ({ onChange, onSubmit, handleRoleChange, role }) => {
               <input
                 type="radio"
                 name="role"
-                value="Owner"
-                checked={role === "Owner"}
+                value="owner"
+                checked={role === "owner"}
                 onChange={handleRoleChange}
               />
               <span>Owner</span>
@@ -122,8 +128,8 @@ const SignUpLayer = ({ onChange, onSubmit, handleRoleChange, role }) => {
               <input
                 type="radio"
                 name="role"
-                value="Investor"
-                checked={role === "Investor"}
+                value="investor"
+                checked={role === "investor"}
                 onChange={handleRoleChange}
               />
               <span>Investor</span>
@@ -134,8 +140,8 @@ const SignUpLayer = ({ onChange, onSubmit, handleRoleChange, role }) => {
               <input
                 type="radio"
                 name="role"
-                value="Admin"
-                checked={role === "Admin"}
+                value="admin"
+                checked={role === "admin"}
                 onChange={handleRoleChange}
               />
               <span>Admin</span>
@@ -164,10 +170,6 @@ const SignUpLayer = ({ onChange, onSubmit, handleRoleChange, role }) => {
   );
 };
 
-const authTypes = {
-  SIGN_IN: "signin",
-  SIGN_UP: "signup",
-};
 function LoginPage() {
   const [switchAuth, setSwitchAuth] = useState(true);
   const [userAuth, setUserAuth] = useState(
@@ -182,13 +184,15 @@ function LoginPage() {
           name: "",
           email: "",
           password: "",
+          role: role,
         },
   );
-  const [role, setRole] = useState("Owner");
+  const [role, setRole] = useState("owner");
 
   const handleRoleChange = (e) => {
     setRole(e.target.value);
   };
+
   const dispatch = useDispatch();
 
   const { isLoading, isError } = useSelector((state) => state.authentication);
@@ -210,19 +214,27 @@ function LoginPage() {
       const { email, password } = userAuth;
       const result = await dispatch(loginUser({ email, password }));
       if (loginUser.fulfilled.match(result)) {
-        console.log(authTypes.SIGN_IN);
         navigate("/home", { replace: true });
       }
     } else if (authTypes.SIGN_UP) {
-      console.log(authTypes.SIGN_UP);
       const { name, email, password } = userAuth;
-
       const result = dispatch(registerUser({ name, email, password, role }));
-      if (isLoading == false) {
-        setSwitchAuth(true);
+      if (!isLoading && !isError) {
+        // setSwitchAuth(true);
+        setTimeout(() => {
+          setSwitchAuth(true);
+        }, 1000);
       }
     }
   };
+
+  // useEffect(() => {
+  //   if (!isLoading && !isError) {
+  //     setTimeout(() => {
+  //       setSwitchAuth(true);
+  //     }, 1000);
+  //   }
+  // }, [isLoading, isError]);
 
   useError(isError);
 

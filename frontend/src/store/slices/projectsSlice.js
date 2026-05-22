@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { getToken } from "../../services/tokenService";
 const initialState = {
   data: [],
   loading: false,
   error: null,
 };
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBjOGQzM2NkYzZlMzUwMjJhZTMxMzEiLCJyb2xlIjoib3duZXIiLCJpYXQiOjE3NzkzNzU3MzQsImV4cCI6MTc4MDIzOTczNH0.SBiX8PbooLB5C1Ru59th8wLujKji9hTxUyEMGsjyiuo"
+
 export const fetchProjects = createAsyncThunk(
   //    type action
   "project/fetchProjects",
@@ -15,7 +16,7 @@ export const fetchProjects = createAsyncThunk(
         "http://localhost:8080/api/projects/my-projects",
         {
             headers :{
-                Authorization : `Bearer ${token}`
+                Authorization : `Bearer ${getToken()}`
             }
         }
       );
