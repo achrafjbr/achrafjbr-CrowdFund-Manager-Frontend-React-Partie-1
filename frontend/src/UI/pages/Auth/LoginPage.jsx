@@ -287,9 +287,9 @@ function LoginPage() {
         className={` min-h-screen
                     flex justify-center  items-center
                      w-1/2 transition-all duration-500
-                    ${switchAuth || isLoading ? "translate-x-0" : "translate-x-full"}   `}
+                    ${switchAuth ? "translate-x-0" : "translate-x-full"}   `}
       >
-        {switchAuth ? (
+        {switchAuth && !isLoading ? (
           <SignInLayer
             onChange={(e) =>
               inputsHandler({ ...e, authType: authTypes.SIGN_IN })
