@@ -29,3 +29,16 @@ export const getProjectById = async (id) => {
 
   return response.data;
 };
+
+// Update project
+export const updateProject = async (id, projectData) => {
+  const token = localStorage.getItem("token");
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.put(`${API_URL}/${id}`, projectData, config);
+  return response.data;
+};
