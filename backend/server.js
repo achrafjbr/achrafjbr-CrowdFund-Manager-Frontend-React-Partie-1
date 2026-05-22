@@ -1,7 +1,6 @@
 const dotenv = require("dotenv");
 const ErrorMiddleware = require("./middlewares/errorHandler");
 dotenv.config();
-var cors = require("cors");
 const connectDB = require("./config/db");
 
 const express = require("express");
@@ -9,6 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const investmentRoutes = require("./routes/investmentRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const cors = require("cors");
 
 const app = express();
 app.use(cors());

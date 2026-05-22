@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DashboardPage from "../UI/pages/DashboardPage";
 import ProjectsPage from "../UI/pages/ProjectsPage";
+import ProjectDetailsPage from "../UI/pages/ProjectDetailsPage";
 import LoginPage from "../UI/pages/Auth/LoginPage";
 import RegisterPage from "../UI/pages/Auth/LoginPage";
 
@@ -43,6 +44,7 @@ function Routing() {
         >
           <Route index element={<DashboardPage />} />
           <Route path="projects" element={<ProjectsPage />} />
+          <Route path="projects/:id" element={<ProjectDetailsPage />}/>
           <Route path="createProject" element={<CreateProjectPage />} />
           <Route path="investors" element={<InvistorsPage />} />
           <Route path="profile" element={<ProfilePage />} />
