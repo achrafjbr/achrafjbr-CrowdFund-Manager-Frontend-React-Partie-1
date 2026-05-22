@@ -28,6 +28,7 @@ export const loginUser = createAsyncThunk(
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (userData, thunkAPI) => {
+    console.log(userData);
     try {
       const response = await registerUserApi(userData);
       console.log("Response in thunk", response);
@@ -69,9 +70,9 @@ const AuthenticationSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
+        setToken(action.payload.token);
         state.user = action.payload.user;
         state.token = action.payload.token;
-        setToken(action.payload.token);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

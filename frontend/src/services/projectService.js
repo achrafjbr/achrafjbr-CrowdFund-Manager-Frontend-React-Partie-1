@@ -1,9 +1,10 @@
 import axios from "axios";
+import { getToken } from "./tokenService";
 
 const API_URL = "http://localhost:8080/api/projects/my-projects";
 
 export const getProjects = async () => {
-  const token = localStorage.getItem("token");
+  const token = getToken();
 
   if (!token) {
     throw new Error("No authentication token found");

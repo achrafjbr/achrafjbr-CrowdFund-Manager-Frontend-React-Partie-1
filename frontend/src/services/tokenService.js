@@ -1,4 +1,5 @@
 import { jwtDecode } from "jwt-decode";
+import { useSelector } from "react-redux";
 const TOKEN_KEY = "token";
 
 const setToken = (token) => localStorage.setItem(TOKEN_KEY, token);
@@ -7,18 +8,12 @@ const deleteToken = () => localStorage.removeItem(TOKEN_KEY);
 
 const decodeToken = () => {
   const token = getToken();
-
   if (!token) return null;
-
-  try {
-    const { userId, role } = jwtDecode(token);
-    return {
-      userId,
-      role,
-    };
-  } catch (error) {
-    return null;
-  }
+  const { userId, role } = jwtDecode(token);
+  return {
+    userId,
+    role,
+  };
 };
 
 export { setToken, getToken, deleteToken, decodeToken, TOKEN_KEY };

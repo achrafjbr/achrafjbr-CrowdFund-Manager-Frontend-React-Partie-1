@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loginUser,
@@ -116,8 +116,8 @@ const SignUpLayer = ({ onChange, onSubmit, handleRoleChange, role }) => {
               <input
                 type="radio"
                 name="role"
-                value="Owner"
-                checked={role === "Owner"}
+                value="owner"
+                checked={role === "owner"}
                 onChange={handleRoleChange}
               />
               <span>Owner</span>
@@ -128,8 +128,8 @@ const SignUpLayer = ({ onChange, onSubmit, handleRoleChange, role }) => {
               <input
                 type="radio"
                 name="role"
-                value="Investor"
-                checked={role === "Investor"}
+                value="investor"
+                checked={role === "investor"}
                 onChange={handleRoleChange}
               />
               <span>Investor</span>
@@ -140,8 +140,8 @@ const SignUpLayer = ({ onChange, onSubmit, handleRoleChange, role }) => {
               <input
                 type="radio"
                 name="role"
-                value="Admin"
-                checked={role === "Admin"}
+                value="admin"
+                checked={role === "admin"}
                 onChange={handleRoleChange}
               />
               <span>Admin</span>
@@ -187,11 +187,12 @@ function LoginPage() {
           role: role,
         },
   );
-  const [role, setRole] = useState("Owner");
+  const [role, setRole] = useState("owner");
 
   const handleRoleChange = (e) => {
     setRole(e.target.value);
   };
+
   const dispatch = useDispatch();
 
   const { isLoading, isError } = useSelector((state) => state.authentication);
@@ -217,13 +218,23 @@ function LoginPage() {
       }
     } else if (authTypes.SIGN_UP) {
       const { name, email, password } = userAuth;
-      console.log("ROOOOOOLE", role);
-      const result = dispatch(registerUser({ name, email, password }));
+      const result = dispatch(registerUser({ name, email, password, role }));
       if (!isLoading && !isError) {
-        setSwitchAuth(true);
+        // setSwitchAuth(true);
+        setTimeout(() => {
+          setSwitchAuth(true);
+        }, 1000);
       }
     }
   };
+
+  // useEffect(() => {
+  //   if (!isLoading && !isError) {
+  //     setTimeout(() => {
+  //       setSwitchAuth(true);
+  //     }, 1000);
+  //   }
+  // }, [isLoading, isError]);
 
   useError(isError);
 

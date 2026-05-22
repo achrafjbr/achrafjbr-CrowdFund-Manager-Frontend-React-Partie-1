@@ -6,15 +6,10 @@ function RouteBasedRole({ roles, children }) {
   } = useSelector((state) => state.authentication);
 
   console.log("RouteBasedRole Token : ", role, userId);
-  return privateRoute(roles, children, role);
+
+  if (roles.includes(role)) {
+    return children;
+  }
 }
 
 export default RouteBasedRole;
-
-const privateRoute = (roles, children, role) => {
-  if (roles.includes(role)) {
-    return children;
-  } else {
-    return <></>;
-  }
-};
