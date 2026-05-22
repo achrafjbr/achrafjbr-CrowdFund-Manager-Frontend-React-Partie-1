@@ -1,12 +1,16 @@
 import { useState } from "react";
 
-function UpdateProjectForm({ initialData, onSubmit, buttonText = "Save project" }) {
+function UpdateProjectForm({
+  initialData,
+  onSubmit,
+  buttonText = "Save project",
+}) {
   const [formData, setFormData] = useState({
-    title: initialData.title || "",
-    description: initialData.description || "",
-    capital: initialData.capital || "",
-    initialInvestment: initialData.initialInvestment || "",
-    maxInvestment: initialData.maxInvestment || "",
+    title: initialData.title ?? "",
+    description: initialData.description ?? "",
+    capital: initialData.capital ?? "",
+    initialInvestment: initialData.initialInvestment ?? "",
+    maxInvestPercent: initialData.maxInvestPercent ?? "",
   });
 
   const handleChange = (e) => {
@@ -23,7 +27,9 @@ function UpdateProjectForm({ initialData, onSubmit, buttonText = "Save project" 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <p className="text-gray-400 text-sm">Please fill all the fields before submitting the form</p>
+      <p className="text-gray-400 text-sm">
+        Please fill all the fields before submitting the form
+      </p>
 
       <div>
         <label className="block text-gray-300 text-sm mb-1">Title</label>
@@ -51,7 +57,9 @@ function UpdateProjectForm({ initialData, onSubmit, buttonText = "Save project" 
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-gray-300 text-sm mb-1">Capital (DH)</label>
+          <label className="block text-gray-300 text-sm mb-1">
+            Capital (DH)
+          </label>
           <input
             type="number"
             name="capital"
@@ -63,11 +71,13 @@ function UpdateProjectForm({ initialData, onSubmit, buttonText = "Save project" 
         </div>
 
         <div>
-          <label className="block text-gray-300 text-sm mb-1">Max investment per investor (%)</label>
+          <label className="block text-gray-300 text-sm mb-1">
+            Max investment per investor (%)
+          </label>
           <input
             type="number"
-            name="maxInvestment"
-            value={formData.maxInvestment}
+            name="maxInvestPercent"
+            value={formData.maxInvestPercent}
             onChange={handleChange}
             min="0"
             max="100"
@@ -78,7 +88,9 @@ function UpdateProjectForm({ initialData, onSubmit, buttonText = "Save project" 
       </div>
 
       <div>
-        <label className="block text-gray-300 text-sm mb-1">Initial investment (DH)</label>
+        <label className="block text-gray-300 text-sm mb-1">
+          Initial investment (DH)
+        </label>
         <input
           type="number"
           name="initialInvestment"
