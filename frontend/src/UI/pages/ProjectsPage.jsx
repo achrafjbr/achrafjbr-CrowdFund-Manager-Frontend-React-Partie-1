@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { fetchProjects } from "../../store/slices/projectSlice";
 import Spinner from "../Spinner";
 import "../../css/projectsPage.css";
 
 function Projects() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { projects, loading, error } = useSelector((state) => state.projects);
 
@@ -48,7 +50,11 @@ function Projects() {
               project.fundingPercentage || (invested / project.capital) * 100;
 
             return (
-              <div key={project._id} className="project-card">
+              <div
+                key={project._id}
+                className="project-card"
+                onClick={() => navigate(`/home/projects/${project._id}`)}
+              >
                 {/* Top Row */}
                 <div className="project-top">
                   <div className="project-left">
