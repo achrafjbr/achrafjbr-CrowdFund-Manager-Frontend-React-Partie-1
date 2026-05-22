@@ -11,6 +11,7 @@ function Projects() {
 
   const { projects, loading, error } = useSelector((state) => state.projects);
 
+  console.log(projects);
   useEffect(() => {
     dispatch(fetchProjects());
   }, [dispatch]);

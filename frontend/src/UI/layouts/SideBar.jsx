@@ -39,10 +39,13 @@ function SideBar() {
         </Navigator>
 
         {/*  */}
-        <Navigator to="projects">
-          <FolderGit2 />
-          <span>Projects</span>
-        </Navigator>
+        <RouteBasedRole roles={"owner"}>
+          <Navigator to="projects">
+            <FolderGit2 />
+            <span>Projects</span>
+          </Navigator>
+        </RouteBasedRole>
+        {/* GET http://localhost:8080/api/projects/my-projects 403 (Forbidden) */}
 
         {/*  */}
         <RouteBasedRole roles={["investor", "owner", "admin"]}>
