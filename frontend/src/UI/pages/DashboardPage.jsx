@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProjects } from "../../store/slices/projectsSlice";
+import { fetchProjects } from "../../store/slices/projectSlice";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -13,9 +14,10 @@ import {
   TableRow,
   Divider,
   Avatar,
+  Chip,
+  LinearProgress,
 } from "@mui/material";
 
-// import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import FolderIcon from "@mui/icons-material/Folder";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
@@ -26,9 +28,10 @@ import { Link } from "react-router-dom";
 
 function DashboardPage() {
   const dispatch = useDispatch();
+   const navigate = useNavigate();
 
   const { projects, loading, error } = useSelector((state) => state.projects);
-  console.log("projects", projects);
+  console.log("PROJECTS:", projects);
 
   const data = projects;
 
@@ -220,18 +223,50 @@ function DashboardPage() {
                   const invested = project.capital - project.remainingCapital;
 
                   return (
-                    <TableRow key={project._id}>
+                    <TableRow
+                      key={project._id}
+                      onClick={() => navigate(`/home/projects/${project._id}`)}
+                    >
                       <TableCell component="th" scope="row">
                         {project.title}
                       </TableCell>
 
-                      <TableCell align="right">{project.status}</TableCell>
+                      <TableCell align="right">
+                        <Chip
+                          size="small"
+                          label={project.status}
+                          color={
+                            project.status === "open" ? "success" : "default"
+                          }
+                          variant={
+                            project.status === "close" ? "filled" : "outlined"
+                          }
+                          sx={{ color: "white" }}
+                        />
+                      </TableCell>
 
                       <TableCell align="right">${project.capital}</TableCell>
 
                       <TableCell align="right">${invested}</TableCell>
 
-                      <TableCell align="right">ligne</TableCell>
+                      <TableCell align="right">
+                        <LinearProgress
+                          variant="determinate"
+                          value={project.maxInvestPercent}
+                          sx={{
+                            height: 8,
+                            borderRadius: 5,
+
+                            backgroundColor: "#2b3142",
+
+                            "& .MuiLinearProgress-bar": {
+                              background:
+                                "linear-gradient(90deg, #c84dff, #7b2ff7)",
+                              borderRadius: 5,
+                            },
+                          }}
+                        />
+                      </TableCell>
                     </TableRow>
                   );
                 })}

@@ -42,3 +42,14 @@ export const updateProject = async (id, projectData) => {
   const response = await axios.put(`${API_URL}/${id}`, projectData, config);
   return response.data;
 };
+export const deleteProject =async (id ) =>{
+  const token = localStorage.getItem("token");
+  const config ={
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }
+  const response = await axios.delete(`http://localhost:8080/api/projects/${id}`, config)
+  return response.data;
+}
