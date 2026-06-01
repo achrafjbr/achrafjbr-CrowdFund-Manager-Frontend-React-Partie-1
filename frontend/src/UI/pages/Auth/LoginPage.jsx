@@ -195,7 +195,11 @@ function LoginPage() {
 
   const dispatch = useDispatch();
 
-  const { isLoading, isError } = useSelector((state) => state.authentication);
+  const { isLoading, isError, isSuccess } = useSelector(
+    (state) => state.authentication,
+  );
+
+  console.log("Success", isSuccess);
 
   const navigate = useNavigate();
 
@@ -219,22 +223,17 @@ function LoginPage() {
     } else if (authTypes.SIGN_UP) {
       const { name, email, password } = userAuth;
       const result = dispatch(registerUser({ name, email, password, role }));
-      if (!isLoading && !isError && registerUser.fulfilled.match(result)) {
-        // setSwitchAuth(true);
-        setTimeout(() => {
-          setSwitchAuth(true);
-        }, 1000);
-      }
     }
   };
 
-  // useEffect(() => {
-  //   if (!isLoading && !isError) {
-  //     setTimeout(() => {
-  //       setSwitchAuth(true);
-  //     }, 1000);
-  //   }
-  // }, [isLoading, isError]);
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("isSuccess", isSuccess);
+      setTimeout(() => {
+        setSwitchAuth(true);
+      }, 1000);
+    }
+  }, [isSuccess]);
 
   useError(isError);
 
@@ -288,9 +287,9 @@ function LoginPage() {
         className={` min-h-screen
                     flex justify-center  items-center
                      w-1/2 transition-all duration-500
-                    ${switchAuth || isLoading ? "translate-x-0" : "translate-x-full"}   `}
+                    ${switchAuth ? "translate-x-0" : "translate-x-full"}   `}
       >
-        {switchAuth ? (
+        {switchAuth && !isLoading ? (
           <SignInLayer
             onChange={(e) =>
               inputsHandler({ ...e, authType: authTypes.SIGN_IN })
