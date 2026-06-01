@@ -60,7 +60,7 @@ const AuthenticationSlice = createSlice({
       state.decodedToken = null;
       deleteToken();
     },
-    hideError: (state, action) => {
+    hideError: (state) => {
       state.isError = null;
     },
   },
@@ -75,6 +75,7 @@ const AuthenticationSlice = createSlice({
         setToken(action.payload.token);
         state.user = action.payload.user;
         state.token = action.payload.token;
+        state.decodedToken = decodeToken();
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

@@ -28,8 +28,12 @@ import { Link } from "react-router-dom";
 
 function DashboardPage() {
   const dispatch = useDispatch();
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
+  const { decodedToken } = useSelector(
+  (state) => state.authentication
+);
+console.log("decodedToken:", decodedToken)
   const { projects, loading, error } = useSelector((state) => state.projects);
   console.log("PROJECTS:", projects);
 
@@ -53,11 +57,11 @@ function DashboardPage() {
     0,
   );
   return (
-    <>
+    <div className="dashboard-page">
       <Typography
         variant="h3"
         gutterBottom
-        sx={{ color: "white", marginLeft: "40px" }}
+        sx={{ color: "white", marginLeft: "40px", marginTop: "15px" }}
       >
         CrowdFund
       </Typography>
@@ -66,7 +70,7 @@ function DashboardPage() {
         gutterBottom
         sx={{ color: "white", marginLeft: "40px" }}
       >
-        Welcome back, John! Here's an overview of your projects.
+        Welcome back, {decodedToken?.name}! Here's an overview of your projects.
       </Typography>
       <Grid container spacing={3} direction="row">
         <Card
@@ -74,16 +78,16 @@ function DashboardPage() {
             width: "200px",
             marginTop: "20px",
             marginLeft: "40px",
-            background:
-              "linear-gradient(180deg, rgba(22, 26, 39, .96), rgba(11, 13, 21, .96))",
+            background: "#1a1f35",
             color: "white",
             border: "1px solid #b39ddb",
+            
           }}
         >
           <CardContent>
             <Grid container spacing={2} direction="column">
               <Grid size={4}>
-                <Avatar sx={{ bgcolor: "#35106e" }}>
+                <Avatar sx={{ bgcolor: "#1a1f35" }}>
                   <FolderIcon />
                 </Avatar>
               </Grid>
@@ -99,8 +103,7 @@ function DashboardPage() {
             width: "200px",
             marginTop: "20px",
             marginLeft: "40px",
-            background:
-              "linear-gradient(180deg, rgba(22, 26, 39, .96), rgba(11, 13, 21, .96))",
+            background: "#1a1f35",
             color: "white",
             border: "1px solid #b39ddb",
           }}
@@ -108,7 +111,7 @@ function DashboardPage() {
           <CardContent>
             <Grid container spacing={2} direction="column">
               <Grid size={4}>
-                <Avatar sx={{ bgcolor: "#35106e" }}>
+                <Avatar sx={{ bgcolor: "#1a1f35" }}>
                   <LockOpenIcon />
                 </Avatar>
               </Grid>
@@ -124,8 +127,7 @@ function DashboardPage() {
             width: "200px",
             marginTop: "20px",
             marginLeft: "40px",
-            background:
-              "linear-gradient(180deg, rgba(22, 26, 39, .96), rgba(11, 13, 21, .96))",
+            background: "#1a1f35",
             color: "white",
             border: "1px solid #b39ddb",
           }}
@@ -133,7 +135,7 @@ function DashboardPage() {
           <CardContent>
             <Grid container spacing={2} direction="column">
               <Grid size={4}>
-                <Avatar sx={{ bgcolor: "#35106e" }}>
+                <Avatar sx={{ bgcolor: "#1a1f35" }}>
                   <LockIcon />
                 </Avatar>
               </Grid>
@@ -149,8 +151,7 @@ function DashboardPage() {
             width: "200px",
             marginTop: "20px",
             marginLeft: "40px",
-            background:
-              "linear-gradient(180deg, rgba(22, 26, 39, .96), rgba(11, 13, 21, .96))",
+            background: "#1a1f35",
             color: "white",
             border: "1px solid #b39ddb",
           }}
@@ -158,7 +159,7 @@ function DashboardPage() {
           <CardContent>
             <Grid container spacing={2} direction="column">
               <Grid size={4}>
-                <Avatar sx={{ bgcolor: "#35106e" }}>
+                <Avatar sx={{ bgcolor: "#1a1f35" }}>
                   <AccountBalanceWalletIcon />
                 </Avatar>
               </Grid>
@@ -177,14 +178,13 @@ function DashboardPage() {
           borderRadius: 4,
           boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
           marginLeft: "40px",
-          background:
-            "linear-gradient(180deg, rgba(22, 26, 39, .96), rgba(11, 13, 21, .96))",
+          background: "#1a1f35",
           color: "white",
           border: "1px solid #b39ddb",
         }}
       >
         <CardContent>
-          <Grid container spacing={100} sx={{}}>
+          <Grid container spacing={100} >
             <Grid item xs={12}>
               <Typography variant="h6" gutterBottom>
                 Projects Overview
@@ -197,7 +197,7 @@ function DashboardPage() {
               </Link>
             </Grid>
           </Grid>
-          <Divider sx={{ my: 2 }} />
+          <Divider sx={{ my: 2, bgcolor: "white" }} />
           <TableContainer sx={{ color: "white" }}>
             <Table
               sx={{
@@ -275,7 +275,7 @@ function DashboardPage() {
           </TableContainer>
         </CardContent>
       </Card>
-    </>
+    </div>
   );
 }
 
