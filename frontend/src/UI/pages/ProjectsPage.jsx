@@ -1,17 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import { fetchProjects } from "../../store/slices/projectSlice";
 import Spinner from "../Spinner";
+import CreateProject from "../components/CreateProject.jsx";
+
 import "../../css/projectsPage.css";
 
 function Projects() {
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  
   const { projects, loading, error } = useSelector((state) => state.projects);
+  const { token } = useSelector((state) => state.authentication);
+console.log(token);
 
-  console.log(projects);
+
   useEffect(() => {
     dispatch(fetchProjects());
   }, [dispatch]);
@@ -32,17 +38,17 @@ function Projects() {
   return (
     <div className="projects-page">
       <main>
-        {/* Header */}
         <div className="projects-header">
           <div>
             <h1>Projects</h1>
             <p>List of actual projects</p>
           </div>
 
-          <button className="new-project-btn">+ New project</button>
+          <button className="new-project-btn" onClick={() => setOpen(true)}>
+            + New project
+          </button>
         </div>
 
-        {/* Projects List */}
         <div className="projects-list">
           {projects.map((project) => {
             const invested = project.capital - project.remainingCapital;
@@ -56,11 +62,11 @@ function Projects() {
                 className="project-card"
                 onClick={() => navigate(`/home/projects/${project._id}`)}
               >
-                {/* Top Row */}
                 <div className="project-top">
                   <div className="project-left">
                     <div className="project-title-row">
                       <h2 className="project-title">{project.title}</h2>
+
                       <span
                         className={
                           project.status?.toLowerCase() === "open"
@@ -76,7 +82,6 @@ function Projects() {
                   </div>
 
                   <div className="project-right">
-                    {/* Capital */}
                     <div className="project-stat">
                       <p className="project-stat-value">
                         {project.capital.toLocaleString()}
@@ -86,7 +91,6 @@ function Projects() {
                       <p className="project-stat-label">Capital</p>
                     </div>
 
-                    {/* Invested */}
                     <div className="project-stat">
                       <p className="project-stat-value">
                         {invested.toLocaleString()}
@@ -98,11 +102,9 @@ function Projects() {
                   </div>
                 </div>
 
-                {/* Progress */}
                 <div className="project-progress">
                   <div className="progress-header">
                     <span>Funding Progress</span>
-
                     <span>{percentage.toFixed(1)}% Funded</span>
                   </div>
 
@@ -120,12 +122,26 @@ function Projects() {
           })}
         </div>
 
-        {/* Empty State */}
         {projects.length === 0 && (
           <div className="empty-projects">
             <h3>No projects found</h3>
-
             <p>Create your first project to get started</p>
+          </div>
+        )}
+
+        {open && (
+          <div className="popup-overlay" onClick={() => setOpen(false)}>
+            <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+              <button className="popup-close" onClick={() => setOpen(false)}>
+                ×
+              </button>
+
+              <CreateProject
+                token={token}
+                onClose={() => setOpen(false)}
+                OnAddProject={() => dispatch(fetchProjects())}
+              />
+            </div>
           </div>
         )}
       </main>

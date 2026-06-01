@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import AuthenticationSlice from "../store/slices/authenticationSlice";
 import InvestorsSlice from "../store/slices/investorsSlice.js";
-import projectReducer from "./slices/projectSlice";
+import projectReducer from "./slices/projectSlice"
+
 
 export const store = configureStore({
   reducer: {
