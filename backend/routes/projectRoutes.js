@@ -15,16 +15,22 @@ router.get(
   roleMiddleware("owner"),
   projectController.getMyProjects
 );
+router.get(
+  "/my-projects/:id",
+  authMiddleware,
+  roleMiddleware("owner", "investor"),
+  projectController.getProjectById
+);
 
 router.put(
-  "/:id",
+  "/my-projects/:id",
   authMiddleware,
   roleMiddleware("owner"),
   projectController.updateProject
 );
 
 router.patch(
-  "/:id/close",
+  "/my-projects/:id/close",
   authMiddleware,
   roleMiddleware("owner"),
   projectController.closePorject

@@ -5,7 +5,7 @@ function MainLayout() {
   return (
     <div className="flex">
       <SideBar />
-      <main>
+      <main className="ml-[18%] w-[82%]">
         <Outlet />
       </main>
     </div>

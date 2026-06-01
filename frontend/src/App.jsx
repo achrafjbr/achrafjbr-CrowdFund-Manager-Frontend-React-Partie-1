@@ -1,7 +1,7 @@
 import { Provider } from "react-redux";
 import "./App.css";
-import Routing from "./Routing/Routing";
 import store from "./store/store";
+import Routing from "./Routing/Routing";
 
 function App() {
   return (
