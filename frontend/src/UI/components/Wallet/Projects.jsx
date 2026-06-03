@@ -45,7 +45,7 @@ function Projects() {
         <div className="flex justify-between items-start mt-1.5">
           <ProjectInvestement
             type={investesementDatatype.MONTANT}
-            info={10000}
+            info={50000}
           />
           <ProjectInvestement
             type={investesementDatatype.POURCENTAGE}

@@ -19,7 +19,7 @@ function InvestCard({ title, sousTitle, sold, icon }) {
 
       <div>
         <p className="font-bold text-2xl">{` ${sold} ${
-          icon === "dollar" ? "€" : icon === "trending" ? "%" : ""
+          icon === "dollar" ? "DH" : icon === "trending" ? "%" : ""
         }`}</p>
         <p className=" text-gray-400 text-[0.9rem] ">{sousTitle}</p>
       </div>

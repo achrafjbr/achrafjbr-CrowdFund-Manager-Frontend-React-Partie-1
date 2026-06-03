@@ -9,6 +9,11 @@ import {
   investisemetOfInvestor,
 } from "../../store/slices/walletSlice";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  financedProjects,
+  openProject,
+  totalInvesti,
+} from "../../Utils/wallet/InvestesementInvestor";
 
 export default function WalletPage() {
   const disptch = useDispatch();
@@ -21,7 +26,6 @@ export default function WalletPage() {
   const getInvestesementInvestorHandler = async () => {
     await disptch(investisemetOfInvestor());
   };
-  console.log("walletState", investements);
 
   useEffect(() => {
     getInvestesementInvestorHandler();
@@ -30,7 +34,8 @@ export default function WalletPage() {
 
   if (isLoading) {
     return <div>Loading.......</div>;
-  } else if (isError) {
+  }
+  if (isError) {
     return <div>Loading.......</div>;
   }
   return (
@@ -65,15 +70,15 @@ export default function WalletPage() {
       <div className=" flex gap-4 justify-center items-center mt-7">
         <InvestCard
           icon={InvestIconType.DOLLAR}
-          sold={10800}
+          sold={totalInvesti(investements)}
           title="Total Investi"
-          sousTitle="Réparti sur 5 projets"
+          sousTitle={`Réparti sur ${financedProjects(investements).length} projets`}
         />
         <InvestCard
           icon={InvestIconType.CHART}
-          sold={5}
+          sold={financedProjects(investements).length}
           title="Projets Financés"
-          sousTitle="4 actifs"
+          sousTitle={`${openProject(investements).length} actifs`}
         />
         <InvestCard
           icon={InvestIconType.TRENDING}

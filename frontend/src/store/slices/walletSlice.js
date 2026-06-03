@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addBalanceAPI, getMeAPI } from "../../services/walletService";
-import { getInvestorsApi } from "../../services/investorsService";
+import {
+  addBalanceAPI,
+  getMeAPI,
+  myInvestisemetAPI,
+} from "../../services/walletService";
+// import { getInvestorsApi } from "../../services/investorsService";
 
 export const addBalance = createAsyncThunk(
   "wallet/addBalance",
@@ -30,7 +34,7 @@ export const investisemetOfInvestor = createAsyncThunk(
   "wallet/investisemetOfInvestor",
   async (apiThunk) => {
     try {
-      const response = await getInvestorsApi();
+      const response = await myInvestisemetAPI();
 
       console.log("investisemetOfInvestor response", response);
       return response;
@@ -59,7 +63,6 @@ const WalletSlice = createSlice({
       })
       .addCase(investisemetOfInvestor.fulfilled, (state, action) => {
         state.investements = action.payload;
-        console.log("investements", action.payload);
         state.isLoading = false;
       })
       .addCase(investisemetOfInvestor.rejected, (state, action) => {
