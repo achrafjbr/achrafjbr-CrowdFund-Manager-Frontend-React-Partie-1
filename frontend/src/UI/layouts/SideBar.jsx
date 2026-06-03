@@ -56,10 +56,12 @@ function SideBar() {
           </Navigator>
         </RouteBasedRole>
 
-        <Navigator to="wallet">
-          <Wallet />
-          <span>Wallet</span>
-        </Navigator>
+        <RouteBasedRole roles={["investor"]}>
+          <Navigator to="wallet">
+            <Wallet />
+            <span>Wallet</span>
+          </Navigator>
+        </RouteBasedRole>
       </div>
 
       {/* <h2 className="mt-20 font-extralight">ACCOUNT</h2> */}
