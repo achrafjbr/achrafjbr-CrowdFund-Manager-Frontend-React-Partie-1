@@ -26,10 +26,17 @@ const avoidDuplicatedCompanies = (investesement) => {
       financedProjects.push({
         companieName: inv.project.title,
         companieStatus: inv.project.status,
+        raisedAmount: inv.project.raisedAmount,
+        fundingPercentage: inv.project.fundingPercentage,
+        createdAt: inv.project.createdAt,
       });
     }
   });
   return financedProjects;
+};
+
+export const totalInvistiForEachCompanie = (investesement) => {
+  return avoidDuplicatedCompanies(investesement);
 };
 
 export const closedInvestesement = (investesement, companyName) => {

@@ -6,24 +6,19 @@ import {
 } from "../../../Utils/investIconTypes";
 import ProjectInvestement from "./ProjectInvestement";
 
-function Projects() {
+function Projects({ companie }) {
+  console.log("COMPANIE", companie);
   return (
     <>
-      <div>
-        <p className="font-bold">Mes Investissements</p>
-        <p className=" text-gray-500">
-          Liste détaillée de tous vos projets financés
-        </p>
-      </div>
-
       <div
         className="flex flex-col justify-between outline-1
        outline-gray-300 w-full rounded p-5 mt-7"
       >
         {/* deal with side effect */}
         <FinanciedProjects
-          isOpen={false}
-          companyName="EcoTech - Énergie Solaire"
+          isOpen={companie.companieStatus === "open" ? true : false}
+          companyName={companie.companieName}
+          // "EcoTech - Énergie Solaire"
         />
 
         <div className="flex justify-between items-start mt-1.5">
@@ -45,15 +40,15 @@ function Projects() {
         <div className="flex justify-between items-start mt-1.5">
           <ProjectInvestement
             type={investesementDatatype.MONTANT}
-            info={50000}
+            info={companie.raisedAmount}
           />
           <ProjectInvestement
             type={investesementDatatype.POURCENTAGE}
-            info={4.7}
+            info={companie.fundingPercentage}
           />
           <ProjectInvestement
             type={investesementDatatype.DATE}
-            info={"25 mai 2026"}
+            info={companie.createdAt}
           />
         </div>
       </div>

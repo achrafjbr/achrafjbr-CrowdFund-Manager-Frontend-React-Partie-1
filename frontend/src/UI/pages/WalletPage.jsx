@@ -13,6 +13,7 @@ import {
   financedProjects,
   openProject,
   totalInvesti,
+  totalInvistiForEachCompanie,
 } from "../../Utils/wallet/InvestesementInvestor";
 
 export default function WalletPage() {
@@ -92,7 +93,16 @@ export default function WalletPage() {
         className="flex flex-col justify-between outline-1
        outline-gray-300 w-full rounded-2xl p-5 mt-7"
       >
-        <Projects />
+        <div>
+          <p className="font-bold">Mes Investissements</p>
+          <p className=" text-gray-500">
+            Liste détaillée de tous vos projets financés
+          </p>
+        </div>
+
+        {totalInvistiForEachCompanie(investements).map((companie) => {
+          return <Projects companie={companie} />;
+        })}
       </section>
     </div>
   );
