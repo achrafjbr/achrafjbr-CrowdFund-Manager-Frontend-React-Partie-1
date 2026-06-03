@@ -9,6 +9,7 @@ export const store = configureStore({
     authentication: AuthenticationSlice,
     investors: InvestorsSlice,
     projects: projectReducer,
+
   },
 });
 export default store;

@@ -1,20 +1,20 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getInvestors } from "../../store/slices/investorsSlice";
+import { fetchInvestors } from "../../store/slices/investorsSlice";
 import InvestorCard from "../components/InvestorCard";
 import noData from "../../assets/images/no-data.png";
 import Spinner from "../Spinner";
 
 function InvistorsPage() {
   useDispatch();
-  const { isLoading, isError, investors } = useSelector(
+  const { isLoading,investors } = useSelector(
     (state) => state.investors,
   );
   console.log("investors", investors);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getInvestors());
+    dispatch(fetchInvestors());
   }, []);
 
   if (isLoading) {

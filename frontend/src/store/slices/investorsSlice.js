@@ -1,42 +1,40 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getInvestorsApi } from "../../services/investorsService";
+import { createAsyncThunk , createSlice } from "@reduxjs/toolkit";
+import {getInvestorsApi} from "../../services/investorsService"
+export const fetchInvestors = createAsyncThunk(
+  "investors/fetchInvestors",
+  async (data,thunkApi) =>{
+     try {
+      return await getInvestorsApi()
+     } catch (error) {
+        return thunkApi.rejectWithValue(
+          error.response?.data?.message || "Failed to fetch investors"
+        )
+     }
+  }
+)
 
-export const getInvestors = createAsyncThunk(
-  "investors/getInvestor",
-  async (thunkApi) => {
-    try {
-      const response = await getInvestorsApi();
-      console.log("Data", response.data);
-      return response;
-    } catch (error) {
-      return thunkApi.rejectWithValue(error.message);
-    }
+ const investorSlice = createSlice({
+  name :"investors",
+  initialState :{
+    investors : [],
+    loding :false,
+    error : null ,
   },
-);
-
-const initialState = {
-  isLoading: false,
-  isError: null,
-  investors: [],
-};
-
-const InvestorsSlice = createSlice({
-  initialState,
-  name: "investors",
-  extraReducers: (builder) =>
+  reducers :{},
+  extraReducers :(builder) =>{
     builder
-      .addCase(getInvestors.pending, (state, action) => {
-        state.isLoading = true;
-        state.isError = null;
-      })
-      .addCase(getInvestors.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.investors = action.payload;
-      })
-      .addCase(getInvestors.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = action.error;
-      }),
-});
-
-export default InvestorsSlice.reducer;
+    .addCase(fetchInvestors.pending , (state) =>{
+      state.loding = true;
+      state.error=null;
+    })
+    .addCase(fetchInvestors.fulfilled, (state ,action) =>{
+      state.loding =false ;
+      state.investors = action.payload;
+    })
+    .addCase(fetchInvestors.rejected, (state ,action) => {
+      state.loding =false
+      state.error =action.payload
+    })
+  }
+})
+export default investorSlice.reducer
