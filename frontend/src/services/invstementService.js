@@ -1,9 +1,9 @@
 import axios from "axios";
 import { getToken } from "./tokenService";
 
-export const getInvestorsApi = async () => {
+export const getInvestmentApi = async () => {
   const response = await axios.get(
-    "http://localhost:8080/api/admin/investors",
+    "http://localhost:8080/api/investments/my-investments",
     {
       headers: {
         Authorization: `Bearer ${getToken()}`,

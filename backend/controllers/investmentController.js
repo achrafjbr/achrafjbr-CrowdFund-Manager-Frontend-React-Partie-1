@@ -1,13 +1,12 @@
 const investmentService = require("../services/investmentService");
 
-
 async function addBalance(req, res) {
   try {
     // console.log(req.body);
     // console.log("headers:", req.headers);
     const user = await investmentService.addBalance(
       req.user._id,
-      req.body.amount
+      req.body.amount,
     );
     res.status(200).json({ balance: user.balance });
   } catch (error) {
@@ -15,6 +14,14 @@ async function addBalance(req, res) {
   }
 }
 
+async function me(req, res) {
+  try {
+    const currentUser = await investmentService.me(req.user._id);
+    return res.status(200).json(currentUser);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
 
 async function getOpenProjects(req, res) {
   try {
@@ -34,20 +41,18 @@ async function getProjectById(req, res) {
   }
 }
 
-
 async function invest(req, res) {
   try {
     const investment = await investmentService.invest(
       req.user._id,
       req.body.projectId,
-      req.body.amount
+      req.body.amount,
     );
     res.status(201).json(investment);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 }
-
 
 async function getMyInvestments(req, res) {
   try {
@@ -64,4 +69,5 @@ module.exports = {
   getProjectById,
   invest,
   getMyInvestments,
+  me,
 };

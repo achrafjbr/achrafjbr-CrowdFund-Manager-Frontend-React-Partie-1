@@ -4,6 +4,7 @@ import {
   LogOut,
   UserRound,
   Users,
+  Wallet,
 } from "lucide-react";
 import Navigator from "../components/Navigator";
 import { useDispatch } from "react-redux";
@@ -48,12 +49,17 @@ function SideBar() {
         {/* GET http://localhost:8080/api/projects/my-projects 403 (Forbidden) */}
 
         {/*  */}
-        <RouteBasedRole roles={["investor", "admin"]}>
+        <RouteBasedRole roles={["admin"]}>
           <Navigator to="investors">
             <Users />
             <span>Investors</span>
           </Navigator>
         </RouteBasedRole>
+
+        <Navigator to="wallet">
+          <Wallet />
+          <span>Wallet</span>
+        </Navigator>
       </div>
 
       {/* <h2 className="mt-20 font-extralight">ACCOUNT</h2> */}

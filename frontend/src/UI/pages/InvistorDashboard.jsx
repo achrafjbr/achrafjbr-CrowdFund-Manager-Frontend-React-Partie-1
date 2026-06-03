@@ -29,21 +29,29 @@ export default function InvistorDashboard() {
   const { name } = useSelector((state) => state.authentication.decodedToken);
   console.log(name);
 
-  const { investors, loading :investorsLoading , error:investorsError } = useSelector((state) => state.investors);
-    const { projects, loading : projectsLoading, error :projectsError} = useSelector((state) => state.projects);
+  const {
+    investors,
+    loading: investorsLoading,
+    error: investorsError,
+  } = useSelector((state) => state.investors);
+  const {
+    projects,
+    loading: projectsLoading,
+    error: projectsError,
+  } = useSelector((state) => state.projects);
   const dataInvest = investors;
   const dataProject = projects;
-    console.log("invest" , dataInvest);
-    console.log( "project" ,dataProject);
-    
-    
+  console.log("invest", dataInvest);
+  console.log("project", dataProject);
+
   useEffect(() => {
     dispatch(fetchInvestors());
   }, [dispatch]);
-  if (investorsLoading ||projectsLoading )
+  if (investorsLoading || projectsLoading)
     return <CircularProgress color="secondary" aria-label="Loading…" />;
-//   const gettprojectIsOpen = dataProject.;
-  if (investorsError || projectsError) return <p> {investorsError || projectsError} </p>;
+  //   const gettprojectIsOpen = dataProject.;
+  if (investorsError || projectsError)
+    return <p> {investorsError || projectsError} </p>;
   return (
     <div>
       <Typography

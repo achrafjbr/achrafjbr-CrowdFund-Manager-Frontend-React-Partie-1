@@ -11,6 +11,7 @@ import ProfilePage from "../UI/pages/Auth/ProfilePage";
 import MainLayout from "../UI/layouts/MainLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRouter from "./PublicRouter";
+import WalletPage from "../UI/pages/WalletPage";
 
 function Routing() {
   return (
@@ -44,9 +45,10 @@ function Routing() {
         >
           <Route index element={<DashboardPage />} />
           <Route path="projects" element={<ProjectsPage />} />
-          <Route path="projects/:id" element={<ProjectDetailsPage />}/>
+          <Route path="projects/:id" element={<ProjectDetailsPage />} />
           {/* <Route path="createProject" element={<CreateProjectPage />} /> */}
           <Route path="investors" element={<InvistorsPage />} />
+          <Route path="wallet" element={<WalletPage />} />
           <Route path="profile" element={<ProfilePage />} />
         </Route>
       </Routes>
