@@ -47,7 +47,19 @@ width: 1030px;
   background: #8b5cf6;
 }
 
+.search-bar {
+  margin: 20px 0;
+}
 
+.search-bar input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #2a2d45;
+  background: #13162a;
+  color: white;
+  outline: none;
+}
 .projects-list {
   display: flex;
   flex-direction: column;

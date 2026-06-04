@@ -9,14 +9,14 @@ import CreateProject from "../components/CreateProject.jsx";
 import "../../css/projectsPage.css";
 
 function Projects() {
+  const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const { projects, loading, error } = useSelector((state) => state.projects);
   const { token } = useSelector((state) => state.authentication);
-console.log(token);
-
+  console.log(token);
 
   useEffect(() => {
     dispatch(fetchProjects());
@@ -48,78 +48,91 @@ console.log(token);
             + New project
           </button>
         </div>
-
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search project..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
         <div className="projects-list">
-          {projects.map((project) => {
-            const invested = project.capital - project.remainingCapital;
+          {projects
+            .filter((project) =>
+              project.title.toLowerCase().startsWith(search.toLowerCase()),
+            )
+            .map((project) => {
+              const invested = project.capital - project.remainingCapital;
 
-            const percentage =
-              project.fundingPercentage || (invested / project.capital) * 100;
+              const percentage =
+                project.fundingPercentage || (invested / project.capital) * 100;
 
-            return (
-              <div
-                key={project._id}
-                className="project-card"
-                onClick={() => navigate(`/home/projects/${project._id}`)}
-              >
-                <div className="project-top">
-                  <div className="project-left">
-                    <div className="project-title-row">
-                      <h2 className="project-title">{project.title}</h2>
+              return (
+                <div
+                  key={project._id}
+                  className="project-card"
+                  onClick={() => navigate(`/home/projects/${project._id}`)}
+                >
+                  <div className="project-top">
+                    <div className="project-left">
+                      <div className="project-title-row">
+                        <h2 className="project-title">{project.title}</h2>
 
-                      <span
-                        className={
-                          project.status?.toLowerCase() === "open"
-                            ? "status-open"
-                            : "status-closed"
-                        }
-                      >
-                        {project.status}
-                      </span>
+                        <span
+                          className={
+                            project.status?.toLowerCase() === "open"
+                              ? "status-open"
+                              : "status-closed"
+                          }
+                        >
+                          {project.status}
+                        </span>
+                      </div>
+
+                      <p className="project-description">
+                        {project.description}
+                      </p>
                     </div>
 
-                    <p className="project-description">{project.description}</p>
+                    <div className="project-right">
+                      <div className="project-stat">
+                        <p className="project-stat-value">
+                          {project.capital.toLocaleString()}
+                          <span>DH</span>
+                        </p>
+
+                        <p className="project-stat-label">Capital</p>
+                      </div>
+
+                      <div className="project-stat">
+                        <p className="project-stat-value">
+                          {invested.toLocaleString()}
+                          <span>DH</span>
+                        </p>
+
+                        <p className="project-stat-label">Invested</p>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="project-right">
-                    <div className="project-stat">
-                      <p className="project-stat-value">
-                        {project.capital.toLocaleString()}
-                        <span>DH</span>
-                      </p>
-
-                      <p className="project-stat-label">Capital</p>
+                  <div className="project-progress">
+                    <div className="progress-header">
+                      <span>Funding Progress</span>
+                      <span>{percentage.toFixed(1)}% Funded</span>
                     </div>
 
-                    <div className="project-stat">
-                      <p className="project-stat-value">
-                        {invested.toLocaleString()}
-                        <span>DH</span>
-                      </p>
-
-                      <p className="project-stat-label">Invested</p>
+                    <div className="progress-track">
+                      <div
+                        className="progress-fill"
+                        style={{
+                          width: `${Math.min(percentage, 100)}%`,
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
-
-                <div className="project-progress">
-                  <div className="progress-header">
-                    <span>Funding Progress</span>
-                    <span>{percentage.toFixed(1)}% Funded</span>
-                  </div>
-
-                  <div className="progress-track">
-                    <div
-                      className="progress-fill"
-                      style={{
-                        width: `${Math.min(percentage, 100)}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
 
         {projects.length === 0 && (
