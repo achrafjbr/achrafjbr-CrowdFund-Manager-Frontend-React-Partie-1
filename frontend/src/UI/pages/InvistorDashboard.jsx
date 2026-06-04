@@ -34,6 +34,7 @@ export default function InvistorDashboard() {
     loading: investorsLoading,
     error: investorsError,
   } = useSelector((state) => state.investors);
+console.log("investors" , investors);
 
   useEffect(() => {
     dispatch(fetchInvestors());
