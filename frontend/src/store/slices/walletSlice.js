@@ -9,6 +9,7 @@ import {
 export const addBalance = createAsyncThunk(
   "wallet/addBalance",
   async (amount, apiThunk) => {
+    console.log("Amount", amount);
     try {
       const response = await addBalanceAPI(amount);
       return response;
@@ -36,7 +37,6 @@ export const investisemetOfInvestor = createAsyncThunk(
     try {
       const response = await myInvestisemetAPI();
 
-      console.log("investisemetOfInvestor response", response);
       return response;
     } catch (error) {
       return apiThunk.rejectWithValue(error.message);
@@ -49,12 +49,22 @@ const initialState = {
   isError: null,
   investements: [],
   investor: {},
+  popupModel: false,
+  isSubmitedBalance: false,
 };
 
 const WalletSlice = createSlice({
   name: "wallet",
   initialState,
-  reducers: {},
+  reducers: {
+    toggle: (state, action) => {
+      state.popupModel = action.payload.visiblity;
+    },
+    submitBalance: (state, action) => {
+      state.isSubmitedBalance = action.payload.isShown;
+      console.log("state.isSubmitedBalance", state.isSubmitedBalance);
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Investement
@@ -86,6 +96,7 @@ const WalletSlice = createSlice({
       // Adding balance.
       .addCase(addBalance.pending, (state, action) => {
         state.isLoading = true;
+        // state.isSubmitedBalance = true;
       })
       .addCase(addBalance.fulfilled, (state, action) => {
         state.investor.balance = action.payload.balance;
@@ -99,3 +110,5 @@ const WalletSlice = createSlice({
 });
 
 export default WalletSlice.reducer;
+
+export const { toggle, submitBalance } = WalletSlice.actions;
