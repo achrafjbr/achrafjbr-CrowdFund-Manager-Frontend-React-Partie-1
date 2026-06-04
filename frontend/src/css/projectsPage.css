@@ -51,6 +51,21 @@
   margin: 20px 0;
 }
 
+.filters {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.filters input,
+.filters select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #2a2d45;
+  background: #13162a;
+  color: white;
+  outline: none;
+}
 .search-bar input {
   width: 100%;
   padding: 12px;
