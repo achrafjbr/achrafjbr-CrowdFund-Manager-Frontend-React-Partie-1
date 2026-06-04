@@ -5,44 +5,46 @@ const investmentController = require("../controllers/investmentController");
 const authMiddleware = require("../middlewares/authMiddleware");
 const roleMiddleware = require("../middlewares/roleMiddleware");
 
-
 router.post(
   "/balance",
   authMiddleware,
   roleMiddleware("investor"),
-  investmentController.addBalance
+  investmentController.addBalance,
 );
-
 
 router.get(
   "/projects",
   authMiddleware,
   roleMiddleware("investor"),
-  investmentController.getOpenProjects
+  investmentController.getOpenProjects,
 );
 
+router.get(
+  "/me",
+  authMiddleware,
+  roleMiddleware("investor"),
+  investmentController.me,
+);
 
 router.get(
   "/projects/:id",
   authMiddleware,
   roleMiddleware("investor"),
-  investmentController.getProjectById
+  investmentController.getProjectById,
 );
-
 
 router.post(
   "/",
   authMiddleware,
   roleMiddleware("investor"),
-  investmentController.invest
+  investmentController.invest,
 );
-
 
 router.get(
   "/my-investments",
   authMiddleware,
   roleMiddleware("investor"),
-  investmentController.getMyInvestments
+  investmentController.getMyInvestments,
 );
 
 module.exports = router;

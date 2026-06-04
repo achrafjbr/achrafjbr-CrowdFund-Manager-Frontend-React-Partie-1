@@ -2,7 +2,6 @@ const Investment = require("../models/Investment");
 const Project = require("../models/Project");
 const User = require("../models/User");
 
-
 async function addBalance(userId, amount) {
   const user = await User.findById(userId);
   if (!user) throw new Error("User not found");
@@ -12,11 +11,14 @@ async function addBalance(userId, amount) {
   return await user.save();
 }
 
+async function me(userId) {
+  const user = await User.findById(userId);
+  return user;
+}
 
 async function getOpenProjects() {
   return await Project.find({ status: "open" });
 }
-
 
 async function getProjectById(projectId) {
   const project = await Project.findById(projectId);
@@ -24,18 +26,14 @@ async function getProjectById(projectId) {
   return project;
 }
 
-
 async function invest(investorId, projectId, amount) {
-  
   const project = await Project.findById(projectId);
   if (!project) throw new Error("Project not found");
-
 
   if (project.status === "closed") {
     throw new Error("Project is closed");
   }
 
-  
   const investor = await User.findById(investorId);
   if (!investor) throw new Error("Investor not found");
   if (investor.balance < amount) {
@@ -47,14 +45,12 @@ async function invest(investorId, projectId, amount) {
     throw new Error("Le montant dépasse le capital restant");
   }
 
-
   const investmentPercentage = (amount / project.capital) * 100;
   if (investmentPercentage > project.maxInvestPercent) {
     throw new Error(
-      `Vous ne pouvez pas investir plus de ${project.maxInvestPercent}% du capital`
+      `Vous ne pouvez pas investir plus de ${project.maxInvestPercent}% du capital`,
     );
   }
-
 
   investor.balance -= amount;
   await investor.save();
@@ -66,9 +62,7 @@ async function invest(investorId, projectId, amount) {
     percentage: investmentPercentage,
   });
 
-
   project.raisedAmount += amount;
-
 
   if (project.raisedAmount >= project.capital) {
     project.status = "closed";
@@ -82,7 +76,7 @@ async function invest(investorId, projectId, amount) {
 async function getMyInvestments(investorId) {
   return await Investment.find({ investor: investorId }).populate(
     "project",
-    "title capital status raisedAmount"
+    "title capital status raisedAmount",
   );
 }
 
@@ -92,4 +86,5 @@ module.exports = {
   getProjectById,
   invest,
   getMyInvestments,
+  me,
 };
