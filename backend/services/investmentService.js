@@ -6,8 +6,7 @@ async function addBalance(userId, amount) {
   const user = await User.findById(userId);
   if (!user) throw new Error("User not found");
   if (amount <= 0) throw new Error("Le montant doit être supérieur à 0");
-
-  user.balance += amount;
+  const balce = (user.balance += parseInt(amount));
   return await user.save();
 }
 

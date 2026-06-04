@@ -6,11 +6,7 @@ import noData from "../../assets/images/no-data.png";
 import Spinner from "../Spinner";
 
 function InvistorsPage() {
-  useDispatch();
-  const { isLoading,investors } = useSelector(
-    (state) => state.investors,
-  );
-  console.log("investors", investors);
+  const { isLoading, investors } = useSelector((state) => state.investors);
   const dispatch = useDispatch();
 
   useEffect(() => {

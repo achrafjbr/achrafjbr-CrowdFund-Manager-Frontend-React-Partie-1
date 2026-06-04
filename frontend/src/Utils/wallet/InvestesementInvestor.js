@@ -11,10 +11,14 @@ export const financedProjects = (investesement) => {
 };
 
 export const openProject = (investesement) => {
-  // `${financedProjects(investements).length} actifs`
   return avoidDuplicatedCompanies(investesement).filter(
     ({ companieStatus }) => companieStatus === "open",
   );
+};
+
+const convertISODate = (isoDate) => {
+  const date = new Date(isoDate);
+  return date.toDateString();
 };
 
 const avoidDuplicatedCompanies = (investesement) => {
@@ -23,12 +27,14 @@ const avoidDuplicatedCompanies = (investesement) => {
   investesement.map((inv) => {
     if (!haveSeen.has(inv.project._id)) {
       haveSeen.set(inv.project._id, inv.project._id);
+
       financedProjects.push({
+        id: inv.project._id,
         companieName: inv.project.title,
         companieStatus: inv.project.status,
         raisedAmount: inv.project.raisedAmount,
         fundingPercentage: inv.project.fundingPercentage,
-        createdAt: inv.project.createdAt,
+        createdAt: convertISODate(inv.createdAt),
       });
     }
   });

@@ -7,7 +7,6 @@ import {
 import ProjectInvestement from "./ProjectInvestement";
 
 function Projects({ companie }) {
-  console.log("COMPANIE", companie);
   return (
     <>
       <div

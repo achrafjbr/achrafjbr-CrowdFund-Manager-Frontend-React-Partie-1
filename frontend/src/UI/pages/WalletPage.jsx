@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import {
   getInvestorBalance,
   investisemetOfInvestor,
+  submitBalance,
+  toggle,
 } from "../../store/slices/walletSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,12 +17,19 @@ import {
   totalInvesti,
   totalInvistiForEachCompanie,
 } from "../../Utils/wallet/InvestesementInvestor";
+import PopupModel from "../components/Wallet/PopupModel";
+import Toast from "../components/Wallet/Toast";
 
 export default function WalletPage() {
   const disptch = useDispatch();
-  const { isLoading, isError, investor, investements } = useSelector(
-    (state) => state.wallet,
-  );
+  const {
+    isLoading,
+    isError,
+    investor,
+    investements,
+    popupModel,
+    isSubmitedBalance,
+  } = useSelector((state) => state.wallet);
   const getInvestorBalanceHandler = async () => {
     await disptch(getInvestorBalance());
   };
@@ -28,19 +37,40 @@ export default function WalletPage() {
     await disptch(investisemetOfInvestor());
   };
 
+  const showAndHidPopupHandler = (visiblity) => {
+    disptch(toggle({ visiblity: visiblity }));
+  };
+
   useEffect(() => {
     getInvestesementInvestorHandler();
     getInvestorBalanceHandler();
   }, []);
 
+  useEffect(() => {
+    if (isSubmitedBalance) {
+      const timer = setTimeout(() => {
+        disptch(
+          submitBalance({
+            isShown: false,
+          }),
+        );
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [disptch, isSubmitedBalance]);
+
   if (isLoading) {
     return <div>Loading.......</div>;
   }
   if (isError) {
-    return <div>Loading.......</div>;
+    return <div>Error.......</div>;
   }
   return (
-    <div className=" min-h-screen p-2.5 mx-20 mt-5">
+    <div className={`relative min-h-screen p-2.5 mx-20 mt-5 z-0  `}>
+      {popupModel && <PopupModel />}
+      {isSubmitedBalance ? <Toast /> : <></>}
+
       {/* top part */}
       {/* deal with side effect */}
       <div
@@ -55,11 +85,9 @@ export default function WalletPage() {
           <p className="font-bold text-2xl">{`${investor.balance} DH`}</p>
 
           <button
-            onClick={() => {
-              console.log("JHDJKHSKHDQK");
-            }}
+            onClick={() => showAndHidPopupHandler(true)}
             className="flex justify-center items-center
-           bg-black text-white p-2 rounded"
+           bg-black text-white p-2 rounded cursor-pointer"
           >
             <Plus size={19} />
             Alimenter le solde
@@ -101,7 +129,7 @@ export default function WalletPage() {
         </div>
 
         {totalInvistiForEachCompanie(investements).map((companie) => {
-          return <Projects companie={companie} />;
+          return <Projects key={companie.id} companie={companie} />;
         })}
       </section>
     </div>
