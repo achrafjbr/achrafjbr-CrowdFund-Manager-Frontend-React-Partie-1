@@ -1,12 +1,12 @@
 import { createAsyncThunk , createSlice } from "@reduxjs/toolkit";
-// import {getInvestorsApi} from "../../services/investorsService"
-import { getInvestmentApi } from "../../services/invstementService";
+import {getInvestorsApi} from "../../services/investorsService" 
+// import { getInvestmentApi } from "../../services/invstementService";
 
 export const fetchInvestors = createAsyncThunk(
   "investors/fetchInvestors",
   async (data,thunkApi) =>{
      try {
-      return await getInvestmentApi()
+      return await getInvestorsApi()
      } catch (error) {
         return thunkApi.rejectWithValue(
           error.response?.data?.message || "Failed to fetch investors"

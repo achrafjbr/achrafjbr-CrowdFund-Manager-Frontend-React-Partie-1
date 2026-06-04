@@ -10,7 +10,7 @@ export const getInvestmentApi = async () => {
       },
     },
   );
-  console.log(response);
+  console.log("response", response);
 
   return response.data;
 };
