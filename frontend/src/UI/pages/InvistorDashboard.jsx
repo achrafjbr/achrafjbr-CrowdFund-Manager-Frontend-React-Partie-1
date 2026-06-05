@@ -252,7 +252,7 @@ export default function InvistorDashboard() {
 }
 
 const cardStyle = {
-  border: "1px solid #334155",
+  outline: "1px solid #e0e0e0",
   borderRadius: "16px",
 };
 
@@ -262,8 +262,9 @@ const avatarStyle = {
 
 const projectsCardStyle = {
   borderRadius: "16px",
-  border: "1px solid #1e293b",
-  boxShadow: "0 0 20px rgba(0,0,0,0.4)",
+  // border: " solid #1e293b",
+  // boxShadow: "0 0 20px rgba(0,0,0,0.4)",
+  outline : "1px solid #e0e0e0"
 };
 
 // const viewAllStyle = {
